@@ -115,7 +115,7 @@ async def start_handler(c: Client, m: Message):
 		)
 		return
 	res = await m.reply_text(
-		text=f"Hi **{m.from_user.first_name}**\n\n ⚡ I am a file/video merger bot\n\n😎 I can merge Telegram files!, And upload it to telegram\n\n**Owner: 🈲 @{Config.OWNER_USERNAME}** ",
+		text=f"Hi **{m.from_user.first_name}**\n\n ⚡ I am a MP3 merger bot\n\n😎 I can merge Telegram files!, And upload it to telegram\n\n**Owner: 🈲 @{Config.OWNER_USERNAME}** ",
 		quote=True
 	)
 
@@ -503,7 +503,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		if vid_list[i] not in _cache:
 			_cache.append(vid_list[i])
 	vid_list = _cache
-	await cb.message.edit(f"🔀 Trying to merge videos ...")
+	await cb.message.edit(f"🔀 Trying to merge audio ...")
 	with open(input_,'w') as _list:
 		_list.write("\n".join(vid_list))
 	merged_video_path = await MergeVideo(
@@ -513,12 +513,12 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		format_='mp3'
 	)
 	if merged_video_path is None:
-		await cb.message.edit("❌ Failed to merge video !")
+		await cb.message.edit("❌ Failed to merge audio !")
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
 		formatDB.update({cb.from_user.id: None})
 		return
-	await cb.message.edit("✅ Sucessfully Merged Video !")
+	await cb.message.edit("✅ Sucessfully Merged audio !")
 	print(f"Video merged for: {cb.from_user.first_name} ")
 	await asyncio.sleep(3)
 	file_size = os.path.getsize(merged_video_path)
