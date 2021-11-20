@@ -16,8 +16,6 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 				chat_id=cb.message.chat.id,
 				audio=merged_video_path,
 				duration=duration,
-				height=height,
-				width=width,
 				caption=f"**{merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
