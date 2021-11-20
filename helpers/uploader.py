@@ -6,7 +6,7 @@ from helpers.display_progress import progress_for_pyrogram,humanbytes
 from config import Config
 
 
-async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height,duration,video_thumbnail,file_size,upload_mode:bool):
+async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height,duration,file_size,upload_mode:bool):
 	try:
 		sent_ = None
 		if upload_mode is False:
@@ -16,8 +16,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 				video=merged_video_path,
 				height=height,
 				width=width,
-				duration=duration,
-				thumb=video_thumbnail,
+				duration=duration
 				caption=f"**File Name: {merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
@@ -31,7 +30,6 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 			sent_ = await c.send_document(
 				chat_id=cb.message.chat.id,
 				document=merged_video_path,
-				thumb=video_thumbnail,
 				caption=f"**File Name: {merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
