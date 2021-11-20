@@ -11,15 +11,11 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 	try:
 		sent_ = None
 		if upload_mode is False:
-			c_time = time.time(
+			c_time = time.time()
 			sent_ = await c.send_audio(
 				chat_id=cb.message.chat.id,
-				audio=merged_video_path,
+				video=merged_video_path,
 				duration=duration,
-				caption=cap_mono,
-				parse_mode="html",
-				performer=artist,
-                                title=title,
 				caption=f"**File Name: {merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
