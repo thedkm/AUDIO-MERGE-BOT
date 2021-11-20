@@ -7,7 +7,7 @@ from config import Config
 from hachoir.metadata import extractMetadata
 
 
-async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height,duration,file_size,upload_mode:bool):
+async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbnail,width,height,duration,file_size,upload_mode:bool):
 	try:
 		sent_ = None
 		if upload_mode is False:
