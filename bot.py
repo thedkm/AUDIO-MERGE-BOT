@@ -120,7 +120,7 @@ async def start_handler(c: Client, m: Message):
 	)
 
 	
-@mergeApp.on_message((filters.document | filters.video) & filters.private & ~filters.edited)
+@mergeApp.on_message((filters.document | filters.audio) & filters.private & ~filters.edited)
 async def video_handler(c: Client, m: Message):
 	if await database.allowedUser(uid=m.from_user.id) is False:
 		res = await m.reply_text(
@@ -128,7 +128,7 @@ async def video_handler(c: Client, m: Message):
 			quote=True
 		)
 		return
-	media = m.video or m.document
+	media = m.audio or m.document
 	if media.file_name is None:
 		await m.reply_text('File Not Found')
 		return
@@ -146,7 +146,7 @@ async def video_handler(c: Client, m: Message):
 			quote=True
 		)
 		return
-	if media.file_name.split(sep='.')[-1].lower() not in ['mkv','mp4','webm']:
+	if media.file_name.split(sep='.')[-1].lower() not in ['m4b','mp3','ogg']:
 		await m.reply_text("This Video Format not Allowed!\nOnly send MP4 or MKV or WEBM.", quote=True)
 		return
 	if queueDB.get(m.from_user.id, None) is None:
