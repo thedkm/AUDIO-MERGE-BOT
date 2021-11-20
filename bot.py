@@ -147,19 +147,19 @@ async def video_handler(c: Client, m: Message):
 		)
 		return
 	if media.file_name.split(sep='.')[-1].lower() not in ['m4b','mp3','ogg']:
-		await m.reply_text("This Video Format not Allowed!\nOnly send MP4 or MKV or WEBM.", quote=True)
+		await m.reply_text("This Format not Allowed!\nOnly send MP3", quote=True)
 		return
 	if queueDB.get(m.from_user.id, None) is None:
 		formatDB.update({m.from_user.id: media.file_name.rsplit(".", 1)[-1].lower()})
 	editable = await m.reply_text("Please Wait ...", quote=True)
-	MessageText = "Okay,\nNow Send Me Next Video or Press **Merge Now** Button!"
+	MessageText = "Okay,\nNow Send Me Next Audio or Press **Merge Now** Button!"
 	if queueDB.get(m.from_user.id, None) is None:
 		queueDB.update({m.from_user.id: []})
 	if (len(queueDB.get(m.from_user.id)) >= 0) and (len(queueDB.get(m.from_user.id))<10 ):
 		queueDB.get(m.from_user.id).append(m.message_id)
 		if len(queueDB.get(m.from_user.id)) == 1:
 			await editable.edit(
-				'**Send me some more videos to merge them into single file**',parse_mode='markdown'
+				'**Send me some more Audio to merge them into single file**',parse_mode='markdown'
 			)
 			return
 		if queueDB.get(m.from_user.id, None) is None:
@@ -178,7 +178,7 @@ async def video_handler(c: Client, m: Message):
 	elif len(queueDB.get(m.from_user.id)) > 10:
 		markup = await MakeButtons(c,m,queueDB)
 		await editable.text(
-			"Max 10 videos allowed",
+			"Max 10 audio allowed",
 			reply_markup=InlineKeyboardMarkup(markup)
 		)
 
@@ -349,7 +349,7 @@ async def callback(c: Client, cb: CallbackQuery):
 	elif cb.data == 'video':
 		Config.upload_as_doc.update({f'{cb.from_user.id}':False})
 		await cb.message.edit(
-			text='Do you want to rename? Default file name is **_merged.mkv**',
+			text='Do you want to rename? Default file name is **_merged.mp3**',
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
@@ -375,7 +375,7 @@ async def callback(c: Client, cb: CallbackQuery):
 	elif cb.data.startswith('rename_'):
 		if 'YES' in cb.data:
 			await cb.message.edit(
-				'Current filename: **_merged.mkv**\n\nSend me new file name without extension: ',
+				'Current filename: **_merged.mp3**\n\nSend me new file name without extension: ',
 				parse_mode='markdown'
 			)
 			res: Message = await c.listen( cb.message.chat.id, timeout=300 )
@@ -384,7 +384,7 @@ async def callback(c: Client, cb: CallbackQuery):
 				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
 				await mergeNow(c,cb,new_file_name)
 		if 'NO' in cb.data:
-			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/_merged.mkv")
+			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/_merged.mp3")
 
 	elif cb.data == 'cancel':
 		await delete_all(root=f"downloads/{cb.from_user.id}/")
