@@ -26,6 +26,7 @@ async def MergeVideo(input_file: str, user_id: int, message: Message, format_: s
 		"-map",
 		"0",
 		"-map_metadata",
+		"1 ",
 		"-c",
 		"copy",
 		output_vid
