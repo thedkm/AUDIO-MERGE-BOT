@@ -541,15 +541,16 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	
 	await cb.message.edit("🎥 Extracting Audio Data ...")
 	duration = 1
-
+        width = 100
+	height = 100
 	try:
 		metadata = extractMetadata(createParser(merged_video_path))
 		if metadata.has("duration"):
 			duration = metadata.get("duration").seconds
-		if metadata.has("title"):
-			title = metadata.get("title")
-		if metadata.has("artist"):
-			performer = metadata.get("artist")
+		if metadata.has("width"):
+			width = metadata.get("width")
+		if metadata.has("height"):
+			height = metadata.get("height")
 	except:
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
