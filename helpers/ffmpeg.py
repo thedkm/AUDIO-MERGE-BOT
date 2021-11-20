@@ -42,7 +42,7 @@ async def MergeVideo(input_file: str, user_id: int, message: Message, format_: s
 		)
 		await asyncio.sleep(10)
 		return None
-	await message.edit("Merging Video Now ...\n\nPlease Keep Patience ...")
+	await message.edit("Merging Audio Now ...\n\nPlease Keep Patience ...")
 	stdout, stderr = await process.communicate()
 	e_response = stderr.decode().strip()
 	t_response = stdout.decode().strip()
