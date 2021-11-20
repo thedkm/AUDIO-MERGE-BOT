@@ -16,7 +16,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 				video=merged_video_path,
 				height=height,
 				width=width,
-				duration=duration
+				duration=duration,
 				caption=f"**File Name: {merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
