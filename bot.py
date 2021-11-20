@@ -568,6 +568,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	await uploadVideo(
 		c=c,
 		cb=cb,
+		thumb=video_thumbnail
 		merged_video_path=merged_video_path,
 		duration=duration,
 		height=height,
