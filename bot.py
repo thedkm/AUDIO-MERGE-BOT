@@ -570,6 +570,8 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		cb=cb,
 		merged_video_path=merged_video_path,
 		duration=duration,
+		height=height,
+	        width=width,
 		file_size=os.path.getsize(merged_video_path),
 		upload_mode=Config.upload_as_doc[f'{cb.from_user.id}']
 	)
