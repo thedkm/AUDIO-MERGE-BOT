@@ -16,7 +16,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 				chat_id=cb.message.chat.id,
 				audio=merged_video_path,
 				duration=duration,
-				caption=f"**File Name: {merged_video_path.rsplit('/',1)[-1]}**",
+				caption=f"**{merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
 					"Uploading file as audio",
@@ -29,7 +29,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 			sent_ = await c.send_document(
 				chat_id=cb.message.chat.id,
 				document=merged_video_path,
-				caption=f"**File Name: {merged_video_path.rsplit('/',1)[-1]}**",
+				caption=f"** {merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
 					"Uploading file as document",
