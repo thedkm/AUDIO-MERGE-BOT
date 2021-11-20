@@ -327,7 +327,7 @@ async def callback(c: Client, cb: CallbackQuery):
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
-						InlineKeyboardButton('🎧Audio', callback_data='audio'),
+						InlineKeyboardButton('🎧Audio', callback_data='video'),
 						InlineKeyboardButton('📁 File', callback_data='document')
 					]
 				]
