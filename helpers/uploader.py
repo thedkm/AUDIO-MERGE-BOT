@@ -13,7 +13,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 			c_time = time.time()
 			sent_ = await c.send_audio(
 				chat_id=cb.message.chat.id,
-				video=merged_video_path,
+				audio=merged_video_path,
 				duration=duration,
 				parse_mode="html",
 				caption=f"**File Name: {merged_video_path.rsplit('/',1)[-1]}**",
