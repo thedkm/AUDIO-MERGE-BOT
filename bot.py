@@ -539,9 +539,9 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		formatDB.update({cb.from_user.id: None})
 		return
 	
-	await cb.message.edit("🎥 Extracting Audio Data ...")
+	await cb.message.edit("🎥 Extracting Video Data ...")
 	duration = 1
-        width = 100
+	width = 100
 	height = 100
 	try:
 		metadata = extractMetadata(createParser(merged_video_path))
