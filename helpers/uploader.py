@@ -7,7 +7,7 @@ from config import Config
 from hachoir.metadata import extractMetadata
 
 
-async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,performer,title,duration,file_size,upload_mode:bool):
+async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height,duration,file_size,upload_mode:bool):
 	try:
 		sent_ = None
 		if upload_mode is False:
@@ -16,8 +16,6 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,performer,ti
 				chat_id=cb.message.chat.id,
 				audio=merged_video_path,
 				duration=duration,
-				title=title,
-				performer=performer,
 				caption=f"**{merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
