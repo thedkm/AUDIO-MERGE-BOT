@@ -509,6 +509,8 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	merged_video_path = await MergeVideo(
 		input_file=input_,
 		user_id=cb.from_user.id,
+		title=title,
+		performer=performer,
 		message=cb.message,
 		format_='mp3'
 	)
@@ -546,7 +548,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		metadata = extractMetadata(createParser(merged_video_path))
 		if metadata.has("duration"):
 			duration = metadata.get("duration").seconds
-		if metadata.has("title):
+		if metadata.has("title"):
 			title = metadata.get("title")
 		if metadata.has("artist"):
 			performer = metadata.get("artist")
