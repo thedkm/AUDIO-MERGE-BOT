@@ -310,7 +310,7 @@ async def callback(c: Client, cb: CallbackQuery):
 			return 
 		Config.upload_to_drive.update({f'{cb.from_user.id}':True})
 		await cb.message.edit(
-			text="Okay I'll upload to drive\nDo you want to rename? Default file name is **[@yashoswalyo]_merged.mkv**",
+			text="Okay I'll upload to drive\nDo you want to rename? Default file name is **_merged.mp3**",
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
@@ -336,7 +336,7 @@ async def callback(c: Client, cb: CallbackQuery):
 	elif cb.data == 'document':
 		Config.upload_as_doc.update({f'{cb.from_user.id}':True})
 		await cb.message.edit(
-			text='Do you want to rename? Default file name is **[@yashoswalyo]_merged.mkv**',
+			text='Do you want to rename? Default file name is **_merged.mp3**',
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
@@ -349,7 +349,7 @@ async def callback(c: Client, cb: CallbackQuery):
 	elif cb.data == 'video':
 		Config.upload_as_doc.update({f'{cb.from_user.id}':False})
 		await cb.message.edit(
-			text='Do you want to rename? Default file name is **[@yashoswalyo]_merged.mkv**',
+			text='Do you want to rename? Default file name is **_merged.mkv**',
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
@@ -375,16 +375,16 @@ async def callback(c: Client, cb: CallbackQuery):
 	elif cb.data.startswith('rename_'):
 		if 'YES' in cb.data:
 			await cb.message.edit(
-				'Current filename: **[@yashoswalyo]_merged.mkv**\n\nSend me new file name without extension: ',
+				'Current filename: **_merged.mkv**\n\nSend me new file name without extension: ',
 				parse_mode='markdown'
 			)
 			res: Message = await c.listen( cb.message.chat.id, timeout=300 )
 			if res.text :
 				ascii_ = e = ''.join([i if (i in string.digits or i in string.ascii_letters or i == " ") else " " for i in res.text])
-				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mkv"
+				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
 				await mergeNow(c,cb,new_file_name)
 		if 'NO' in cb.data:
-			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/[@yashoswalyo]_merged.mkv")
+			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/_merged.mkv")
 
 	elif cb.data == 'cancel':
 		await delete_all(root=f"downloads/{cb.from_user.id}/")
@@ -510,7 +510,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		input_file=input_,
 		user_id=cb.from_user.id,
 		message=cb.message,
-		format_='mkv'
+		format_='mp3'
 	)
 	if merged_video_path is None:
 		await cb.message.edit("❌ Failed to merge video !")
