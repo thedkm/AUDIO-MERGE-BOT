@@ -17,7 +17,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,performer,ti
 				audio=merged_video_path,
 				duration=duration,
 				title=title,
-				duration=performer,
+				performer=performer,
 				caption=f"**{merged_video_path.rsplit('/',1)[-1]}**",
 				progress=progress_for_pyrogram,
 				progress_args=(
