@@ -541,8 +541,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	
 	await cb.message.edit("🎥 Extracting Audio Data ...")
 	duration = 1
-	title = 
-	performer = 
+
 	try:
 		metadata = extractMetadata(createParser(merged_video_path))
 		if metadata.has("duration"):
