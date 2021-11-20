@@ -523,7 +523,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	await asyncio.sleep(3)
 	file_size = os.path.getsize(merged_video_path)
 	os.rename(merged_video_path,new_file_name)
-	await cb.message.edit(f"🔄 Renamed Merged Video to\n **{new_file_name.rsplit('/',1)[-1]}**")
+	await cb.message.edit(f"🔄 Renamed Merged Audio to\n **{new_file_name.rsplit('/',1)[-1]}**")
 	await asyncio.sleep(1)
 	merged_video_path = new_file_name
 	if Config.upload_to_drive[f'{cb.from_user.id}']:
@@ -533,24 +533,24 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		formatDB.update({cb.from_user.id: None})
 		return
 	if file_size > 2044723200:
-		await cb.message.edit("Video is Larger than 2GB Can't Upload")
+		await cb.message.edit("Audio is Larger than 2GB Can't Upload")
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
 		formatDB.update({cb.from_user.id: None})
 		return
 	
-	await cb.message.edit("🎥 Extracting Video Data ...")
+	await cb.message.edit("🎥 Extracting Audio Data ...")
 	duration = 1
-	width = 100
-	height = 100
+	title = 
+	performer = 
 	try:
 		metadata = extractMetadata(createParser(merged_video_path))
 		if metadata.has("duration"):
 			duration = metadata.get("duration").seconds
 		if metadata.has("width"):
-			width = metadata.get("width")
+			title = metadata.get("title")
 		if metadata.has("height"):
-			height = metadata.get("height")
+			performer = metadata.get("artist")
 	except:
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
