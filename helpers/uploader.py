@@ -11,12 +11,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,width,height
 	try:
 		sent_ = None
 		if upload_mode is False:
-			c_time = time.time()
-			metadata = extractMetadata(createParser(up_path))
-                        if metadata.has("duration"):
-                        	duration = metadata.get('duration').seconds
-                    	title = metadata.get("title") if metadata.has("title") else None
-                    	artist = metadata.get("artist") if metadata.has("artist") else None
+			c_time = time.time(
 			sent_ = await c.send_audio(
 				chat_id=cb.message.chat.id,
 				audio=merged_video_path,
