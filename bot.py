@@ -54,7 +54,7 @@ async def allowUser(c:Client, m: Message):
 		)
 	else:
 		await m.reply_text(
-			text=f"**Login failed ❌,**\n  🛡️ Unfortunately you can't use me\n\nContact: 🈲 @{Config.OWNER_USERNAME}",
+			text=f"**Login failed ❌,**\n  🛡️ Unfortunately you can't use me",
 			quote=True
 		)
 	return
@@ -110,7 +110,7 @@ async def start_handler(c: Client, m: Message):
 	await database.addUser(uid=m.from_user.id,fname=m.from_user.first_name, lname=m.from_user.last_name)
 	if await database.allowedUser(uid=m.from_user.id) is False:
 		res = await m.reply_text(
-			text=f"Hi **{m.from_user.first_name}**\n\n 🛡️ Unfortunately you can't use me\n\n**Contact: 🈲 @{Config.OWNER_USERNAME}** ",
+			text=f"Hi **{m.from_user.first_name}**\n\n 🛡️ Unfortunately you can't use me",
 			quote=True
 		)
 		return
@@ -124,7 +124,7 @@ async def start_handler(c: Client, m: Message):
 async def video_handler(c: Client, m: Message):
 	if await database.allowedUser(uid=m.from_user.id) is False:
 		res = await m.reply_text(
-			text=f"Hi **{m.from_user.first_name}**\n\n 🛡️ Unfortunately you can't use me\n\n**Contact: 🈲 @{Config.OWNER_USERNAME}** ",
+			text=f"Hi **{m.from_user.first_name}**\n\n 🛡️ Unfortunately you can't use me ",
 			quote=True
 		)
 		return
@@ -159,7 +159,7 @@ async def video_handler(c: Client, m: Message):
 		queueDB.get(m.from_user.id).append(m.message_id)
 		if len(queueDB.get(m.from_user.id)) == 1:
 			await editable.edit(
-				'**Send me some more Audio to merge them into single file**',parse_mode='markdown'
+				'**Send me some more audio to merge them into single file**',parse_mode='markdown'
 			)
 			return
 		if queueDB.get(m.from_user.id, None) is None:
@@ -186,7 +186,7 @@ async def video_handler(c: Client, m: Message):
 async def photo_handler(c: Client,m: Message):
 	if await database.allowedUser(uid=m.from_user.id) is False:
 		res = await m.reply_text(
-			text=f"Hi **{m.from_user.first_name}**\n\n 🛡️ Unfortunately you can't use me\n\n**Contact: 🈲 @{Config.OWNER_USERNAME}** ",
+			text=f"Hi **{m.from_user.first_name}**\n\n 🛡️ Unfortunately you can't use me",
 			quote=True
 		)
 		return
@@ -226,25 +226,13 @@ async def help_msg(c: Client, m: Message):
 async def about_handler(c:Client,m:Message):
 	await m.reply_text(
 		text='''
-- **WHAT'S NEW:**
-+ Upload to drive using your own rclone config
-+ Merged video preserves all streams of the first video you send (i.e. all audiotracks/subtitles)
-- **FEATURES:**
-+ Merge Upto 10 videos in one 
-+ Upload as document/video 
-+ Custom thumbnail support
-+ Users can login to bot using password
-+ Owner can broadcast message to all users	
+	MP3 Merger Bot , Can merge upto 20 MP3s into Single MP3.
 		''',
 		quote=True,
 		reply_markup=InlineKeyboardMarkup(
 			[ 
 				[ 
-					InlineKeyboardButton("Developer", url="https://t.me/yashoswalyo")
-				],
-				[ 
-					InlineKeyboardButton("Source Code", url="https://github.com/yashoswalyo/MERGE-BOT"),
-					InlineKeyboardButton("Deployed By", url=f"https://t.me/{Config.OWNER_USERNAME}")
+					InlineKeyboardButton("Owner", url="https://t.me/SherlockSr")
 				]
 			]
 		)
@@ -436,11 +424,11 @@ async def showQueue(c:Client, cb: CallbackQuery):
 	try:
 		markup = await MakeButtons(c,cb.message,queueDB)
 		await cb.message.edit(
-			text="Okay,\nNow Send Me Next Video or Press **Merge Now** Button!",
+			text="Okay,\nNow Send Me Next Audio or Press **Merge Now** Button!",
 			reply_markup=InlineKeyboardMarkup(markup)
 		)
 	except ValueError:
-		await cb.message.edit('Send Some more videos')
+		await cb.message.edit('Send Some more Audio')
 
 
 async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
@@ -518,7 +506,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		queueDB.update({cb.from_user.id: []})
 		formatDB.update({cb.from_user.id: None})
 		return
-	await cb.message.edit("✅ Sucessfully Merged audio !")
+	await cb.message.edit("✅ Sucessfully Merged Audio !")
 	print(f"Video merged for: {cb.from_user.first_name} ")
 	await asyncio.sleep(3)
 	file_size = os.path.getsize(merged_video_path)
