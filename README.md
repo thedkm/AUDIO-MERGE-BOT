@@ -5,7 +5,7 @@ An Telegram Bot To Merge multiple MP3s in Telegram into single Audio.
 
 
 ## Deploy(at your own risk) :
-<p><a href="https://heroku.com/deploy?template=https://github.com/yashoswalyo/MERGE-BOT"><img src="https://img.shields.io/badge/Deploy%20To%20Heroku-blueviolet?style=for-the-badge&logo=heroku" width="200""/></a></p>
+<p><a href="https://heroku.com/deploy?template=https://github.com/thedkm/MP3-MERGE-BOT"><img src="https://img.shields.io/badge/Deploy%20To%20Heroku-blueviolet?style=for-the-badge&logo=heroku" width="200""/></a></p>
 
 ## Config Variables :
 1. `API_ID` : User Account Telegram API_ID, get it from my.telegram.org
@@ -61,5 +61,5 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 - [Me](https://github.com/thedkm) for [Nothing](https://github.com/thedkm/MP3-MERGE-BOT) 😬
 - [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram/pyrogram) ❤️
-- [yashoswalyo](https://github.com/yashoswalyo) for (https://github.com/yashoswalyo/MERGE-BOT) ❤️
+- [yashoswalyo](https://github.com/yashoswalyo) for [repo] (https://github.com/yashoswalyo/MERGE-BOT) ❤️
 
