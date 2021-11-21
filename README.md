@@ -40,8 +40,8 @@ $ python3 bot.py
 
 ## License
 ```sh
-Merge Bot, Telegram Video Merge Bot
-Copyright (c) 2021  Yash Oswal <https://github.com/yashoswalyo>
+MP3 Merge Bot, Telegram MP3 Merge Bot
+Copyright (c) 2021 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
