@@ -146,7 +146,7 @@ async def video_handler(c: Client, m: Message):
 			quote=True
 		)
 		return
-	if media.file_name.split(sep='.')[-1].lower() not in ['m4b','mp3','ogg']:
+	if media.file_name.split(sep='.')[-1].lower() not in ['m4b','mp3','opus']:
 		await m.reply_text("This Format not Allowed!\nOnly send MP3", quote=True)
 		return
 	if queueDB.get(m.from_user.id, None) is None:
