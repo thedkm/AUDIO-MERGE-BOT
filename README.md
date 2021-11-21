@@ -1,23 +1,8 @@
-# MERGE-BOT
+# MP3 MERGE-BOT
 ### PR's welcomed
 
-An Telegram Bot By [Yash Oswal](https://t.me/yashoswalyo) To Merge multiple Videos in Telegram into single video.
+An Telegram Bot To Merge multiple MP3s in Telegram into single Audio.
 
-```diff
-- WHAT'S NEW:
-+ Upload Files to Drive
-+ Merged video preserves all streams of the first video you send (i.e. all audiotracks/subtitles)
-
-- FEATURES:
-+ Merge Upto 10 videos in one 
-+ Upload as document/video 
-+ Custom thumbnail support
-+ Users can login to bot using password
-+ Owner can broadcast message to all users
-
-- TO DO:
-+ Option to add subtitles to telegram video
-```
 
 ## Deploy(at your own risk) :
 <p><a href="https://heroku.com/deploy?template=https://github.com/yashoswalyo/MERGE-BOT"><img src="https://img.shields.io/badge/Deploy%20To%20Heroku-blueviolet?style=for-the-badge&logo=heroku" width="200""/></a></p>
@@ -74,7 +59,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 ## Credits
 
-- [Me](https://github.com/thedkm) for [Nothing](https://github.com/thedkm/MERGE-BOT) 😬
+- [Me](https://github.com/thedkm) for [Nothing](https://github.com/thedkm/MP3-MERGE-BOT) 😬
 - [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram/pyrogram) ❤️
 - [yashoswalyo](https://github.com/yashoswalyo) for (https://github.com/yashoswalyo/MERGE-BOT) ❤️
 
