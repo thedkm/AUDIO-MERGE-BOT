@@ -226,8 +226,7 @@ async def help_msg(c: Client, m: Message):
 async def about_handler(c:Client,m:Message):
 	await m.reply_text(
 		text='''
-	**\n\n ⚡ I am a MP3 Merger bot\n\n😎 I Can merge upto 20 MP3s Files into Single MP3, And upload it to telegram\n\n .
-		''',
+	**\n\n ⚡ I am a MP3 Merger bot\n\n😎 I Can merge upto 20 MP3s Files into Single MP3, And upload it to telegram.		''',
 		quote=True,
 		reply_markup=InlineKeyboardMarkup(
 			[ 
