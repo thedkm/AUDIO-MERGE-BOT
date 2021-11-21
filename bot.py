@@ -208,7 +208,7 @@ async def help_msg(c: Client, m: Message):
 		text='''**Follow These Steps:
 
 1) Send me the custom thumbnail (optional).
-2) Send two or more Your Videos Which you want to merge
+2) Send two or more Your Audio Which you want to merge
 3) After sending all files select merge options
 4) Select the upload mode.
 5) Select rename if you want to give custom file name else press default**''',
@@ -226,7 +226,7 @@ async def help_msg(c: Client, m: Message):
 async def about_handler(c:Client,m:Message):
 	await m.reply_text(
 		text='''
-	MP3 Merger Bot , Can merge upto 20 MP3s into Single MP3.
+	**\n\n ⚡ I am a MP3 Merger bot\n\n😎 I Can merge upto 20 MP3s Files into Single MP3, And upload it to telegram\n\n .
 		''',
 		quote=True,
 		reply_markup=InlineKeyboardMarkup(
@@ -484,7 +484,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 			await delete_all(root=f'./downloads/{cb.from_user.id}')
 			queueDB.update({cb.from_user.id: []})
 			formatDB.update({cb.from_user.id: None})
-			await cb.message.edit('⚠️ Video is corrupted')
+			await cb.message.edit('⚠️ Audio is corrupted')
 			return
 	_cache = list()
 	for i in range(len(vid_list)):
@@ -507,7 +507,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		formatDB.update({cb.from_user.id: None})
 		return
 	await cb.message.edit("✅ Sucessfully Merged Audio !")
-	print(f"Video merged for: {cb.from_user.first_name} ")
+	print(f"Audio merged for: {cb.from_user.first_name} ")
 	await asyncio.sleep(3)
 	file_size = os.path.getsize(merged_video_path)
 	os.rename(merged_video_path,new_file_name)
@@ -527,7 +527,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		formatDB.update({cb.from_user.id: None})
 		return
 	
-	await cb.message.edit("🎥 Extracting Video Data ...")
+	await cb.message.edit("🎥 Extracting Audio Data ...")
 	duration = 1
 	width = 100
 	height = 100
@@ -543,7 +543,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
 		formatDB.update({cb.from_user.id: None})
-		await cb.message.edit("⭕ Merged Video is corrupted")
+		await cb.message.edit("⭕ Merged Audio is corrupted")
 		return
 	video_thumbnail = f'./downloads/{cb.from_user.id}_thumb.jpg'
 	if os.path.exists(video_thumbnail) is False:
