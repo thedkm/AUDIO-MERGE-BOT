@@ -61,5 +61,5 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 - [Me](https://github.com/thedkm) for [Nothing](https://github.com/thedkm/MP3-MERGE-BOT) 😬
 - [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram/pyrogram) ❤️
-- [yashoswalyo](https://github.com/yashoswalyo) for [repo] (https://github.com/yashoswalyo/MERGE-BOT) ❤️
+- [yashoswalyo](https://github.com/yashoswalyo) for [repo](https://github.com/yashoswalyo/MERGE-BOT) ❤️
 
