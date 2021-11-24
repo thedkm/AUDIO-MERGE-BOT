@@ -498,8 +498,8 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
     meta_data_path = await MetaData(
         input_file=vid_list[0]
         user_id=cb.from_user.id,
-		message=cb.message,
-		format_='txt'
+        message=cb.message,
+        format_='txt'
     )
     
     merged_video_path = await MergeVideo(
