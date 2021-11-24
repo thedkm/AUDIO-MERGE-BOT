@@ -21,19 +21,11 @@ async def MetaData(input_file: str, user_id: int, message: Message, format_: str
 		"ffmetadata",
 		metadatatemp
 	]
-	process = None
-	try:
-		process = await asyncio.create_subprocess_exec(
+	process = await asyncio.create_subprocess_exec(
 			*file_generator_command,
 			stdout=asyncio.subprocess.PIPE,
 			stderr=asyncio.subprocess.PIPE,
 		)
-	except NotImplementedError:
-		await message.edit(
-			text="Unable to Execute FFmpeg Command! Got `NotImplementedError` ...\n\nPlease run bot in a Linux/Unix Environment."
-		)
-		await asyncio.sleep(10)
-		return None
 	await message.edit("Merging Audio Now ...\n\nPlease Keep Patience ...")
 	stdout, stderr = await process.communicate()
 	e_response = stderr.decode().strip()
