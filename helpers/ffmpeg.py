@@ -46,7 +46,7 @@ async def Metadata(input_file: str, user_id: int, message: Message, format_: str
 		return None
 
 
-async def MergeVideo(input_file: str,metadatate: str user_id: int, message: Message, format_: str):
+async def MergeVideo(input_file: str, user_id: int, message: Message, format_: str):
 	"""
 	This is for Merging Videos Together!
 	:param input_file: input.txt file's location.
