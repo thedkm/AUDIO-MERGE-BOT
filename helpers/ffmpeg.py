@@ -6,39 +6,7 @@ from pyrogram.types import Message
 
 
 
-
-async def MetaData(input_file: str, user_id: int, message: Message, format_: str):
-	"""
-	This is for Merging Videos Together!
-
-	"""
-	metadatatemp = f"downloads/{str(user_id)}/[@yashoswalyo].{format_.lower()}"
-	file_generator_command = [
-		"ffmpeg",
-		"-i",
-		input_file,
-		"-f",
-		"ffmetadata",
-		metadatatemp
-	]
-	process = await asyncio.create_subprocess_exec(
-			*file_generator_command,
-			stdout=asyncio.subprocess.PIPE,
-			stderr=asyncio.subprocess.PIPE,
-		)
-	await message.edit("Merging Audio Now ...\n\nPlease Keep Patience ...")
-	stdout, stderr = await process.communicate()
-	e_response = stderr.decode().strip()
-	t_response = stdout.decode().strip()
-	print(e_response)
-	print(t_response)
-	if os.path.lexists(metadatatemp):
-		return metadatatemp
-	else:
-		return None
-
-
-async def MergeVideo(input_file: str, metadatatemp: str, user_id: int, message: Message, format_: str):
+async def MergeVideo(input_file: str, user_id: int, message: Message, format_: str):
 	"""
 	This is for Merging Videos Together!
 	:param input_file: input.txt file's location.
@@ -56,12 +24,10 @@ async def MergeVideo(input_file: str, metadatatemp: str, user_id: int, message: 
 		"0",
 		"-i",
 		input_file,
-		"-i"
-		metadatatemp
 		"-map",
 		"0",
 		"-map_metadata",
-		"1",
+		"0",
 		"-c",
 		"copy",
 		output_vid
