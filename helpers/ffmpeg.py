@@ -7,7 +7,7 @@ from pyrogram.types import Message
 
 
 
-async def Metadata(input_file: str, user_id: int, message: Message, format_: str):
+async def MetaData(input_file: str, user_id: int, message: Message, format_: str):
 	"""
 	This is for Merging Videos Together!
 
