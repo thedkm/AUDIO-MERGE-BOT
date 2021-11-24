@@ -20,7 +20,6 @@ from config import Config
 from helpers import database
 from helpers.display_progress import progress_for_pyrogram
 from helpers.ffmpeg import MergeVideo
-from helpers.ffmpeg import MetaData
 from helpers.uploader import uploadVideo
 from helpers.utils import get_readable_time, get_readable_file_size
 from helpers.rclone_upload import rclone_driver, rclone_upload
@@ -494,13 +493,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	await cb.message.edit(f"🔀 Trying to merge audio ...")
 	with open(input_,'w') as _list:
 		_list.write("\n".join(vid_list))
-		
-	meta_data = await MetaData(
-		input_file=input_,
-		user_id=cb.from_user.id,
-		message=cb.message,
-		format_='mp3'	
-	)	
+			
 	merged_video_path = await MergeVideo(
 		input_file=input_,
 		metadatatemp=meta_data,
