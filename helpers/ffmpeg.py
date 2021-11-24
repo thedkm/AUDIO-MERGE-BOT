@@ -5,8 +5,13 @@ from config import Config
 from pyrogram.types import Message
 
 
+async def MetaData(filePath:str, user_id: int):
+	print("Extracting MetaData")
+	subprocess.call(f"ffmpeg -i '{filePath}' -f ffmetadata metadatatemp.txt" ,shell=True)
+	return f'./downloads/{str(user_id)}/metadatatemp.txt'
 
-async def MergeVideo(input_file: str, user_id: int, message: Message, format_: str):
+
+async def MergeVideo(input_file: str, user_id: int, meta_data: str, message: Message, format_: str):
 	"""
 	This is for Merging Videos Together!
 	:param input_file: input.txt file's location.
@@ -24,6 +29,8 @@ async def MergeVideo(input_file: str, user_id: int, message: Message, format_: s
 		"0",
 		"-i",
 		input_file,
+        "-i",
+        meta_data,
 		"-map",
 		"0",
 		"-map_metadata",
