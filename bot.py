@@ -1,6 +1,5 @@
 import asyncio
 import os
-import subprocess
 import shutil
 import string
 import time
