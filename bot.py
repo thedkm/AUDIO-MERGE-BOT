@@ -495,7 +495,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		_list.write("\n".join(vid_list))
         
 	meta_data = await MetaData(
-		input_file=vid_list[0],
+		filePath=vid_list[0],
 		user_id=cb.from_user.id,
 	
 	)
