@@ -146,7 +146,7 @@ async def video_handler(c: Client, m: Message):
 			quote=True
 		)
 		return
-	if media.file_name.split(sep='.')[-1].lower() not in ['m4b','mp3','opus']:
+	if media.file_name.split(sep='.')[-1].lower() not in ['mp3']:
 		await m.reply_text("This Format not Allowed!\nOnly send MP3", quote=True)
 		return
 	if queueDB.get(m.from_user.id, None) is None:
@@ -155,7 +155,7 @@ async def video_handler(c: Client, m: Message):
 	MessageText = "Okay,\nNow Send Me Next Audio or Press **Merge Now** Button!"
 	if queueDB.get(m.from_user.id, None) is None:
 		queueDB.update({m.from_user.id: []})
-	if (len(queueDB.get(m.from_user.id)) >= 0) and (len(queueDB.get(m.from_user.id))<30 ):
+	if (len(queueDB.get(m.from_user.id)) >= 0) and (len(queueDB.get(m.from_user.id))<100 ):
 		queueDB.get(m.from_user.id).append(m.message_id)
 		if len(queueDB.get(m.from_user.id)) == 1:
 			await editable.edit(
@@ -166,7 +166,7 @@ async def video_handler(c: Client, m: Message):
 			formatDB.update({m.from_user.id: media.file_name.split(sep='.')[-1].lower()})
 		if replyDB.get(m.from_user.id, None) is not None:
 			await c.delete_messages(chat_id=m.chat.id, message_ids=replyDB.get(m.from_user.id))
-		if len(queueDB.get(m.from_user.id)) == 30:
+		if len(queueDB.get(m.from_user.id)) == 100:
 			MessageText = "Okay Unkil, Now Just Press **Merge Now** Button Plox!"
 		markup = await MakeButtons(c, m, queueDB)
 		reply_ = await m.reply_text(
@@ -175,7 +175,7 @@ async def video_handler(c: Client, m: Message):
 			quote=True
 		)
 		replyDB.update({m.from_user.id: reply_.message_id})
-	elif len(queueDB.get(m.from_user.id)) > 30:
+	elif len(queueDB.get(m.from_user.id)) > 100:
 		markup = await MakeButtons(c,m,queueDB)
 		await editable.text(
 			"Max 30 audio allowed",
