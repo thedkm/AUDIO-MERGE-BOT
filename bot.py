@@ -19,7 +19,7 @@ from pyromod import listen
 from config import Config
 from helpers import database
 from helpers.display_progress import progress_for_pyrogram
-from helpers.ffmpeg import MergeVideo,MetaData
+from helpers.ffmpeg import MergeVideo, MetaData
 from helpers.uploader import uploadVideo
 from helpers.utils import get_readable_time, get_readable_file_size
 from helpers.rclone_upload import rclone_driver, rclone_upload
