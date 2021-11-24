@@ -5,7 +5,48 @@ from config import Config
 from pyrogram.types import Message
 
 
-async def MergeVideo(input_file: str, user_id: int, message: Message, format_: str):
+
+
+async def Metadata(input_file: str, user_id: int, message: Message, format_: str):
+	"""
+	This is for Merging Videos Together!
+
+	"""
+	output_vid = f"downloads/{str(user_id)}/[@yashoswalyo].{format_.lower()}"
+	file_generator_command = [
+		"ffmpeg",
+		"-i",
+		input_file,
+		"-f,
+		"ffmetadata",
+		metadatatemp
+	]
+	process = None
+	try:
+		process = await asyncio.create_subprocess_exec(
+			*file_generator_command,
+			stdout=asyncio.subprocess.PIPE,
+			stderr=asyncio.subprocess.PIPE,
+		)
+	except NotImplementedError:
+		await message.edit(
+			text="Unable to Execute FFmpeg Command! Got `NotImplementedError` ...\n\nPlease run bot in a Linux/Unix Environment."
+		)
+		await asyncio.sleep(10)
+		return None
+	await message.edit("Merging Audio Now ...\n\nPlease Keep Patience ...")
+	stdout, stderr = await process.communicate()
+	e_response = stderr.decode().strip()
+	t_response = stdout.decode().strip()
+	print(e_response)
+	print(t_response)
+	if os.path.lexists(metadatatemp):
+		return metadatatemp
+	else:
+		return None
+
+
+async def MergeVideo(input_file: str,metadatate: str user_id: int, message: Message, format_: str):
 	"""
 	This is for Merging Videos Together!
 	:param input_file: input.txt file's location.
@@ -23,6 +64,8 @@ async def MergeVideo(input_file: str, user_id: int, message: Message, format_: s
 		"0",
 		"-i",
 		input_file,
+		"-i"
+		metadatatemp,
 		"-map",
 		"0",
 		"-map_metadata",
@@ -56,6 +99,7 @@ async def MergeVideo(input_file: str, user_id: int, message: Message, format_: s
 		return None
 
 
+	
 async def cult_small_video(video_file, output_directory, start_time, end_time, format_):
 	# https://stackoverflow.com/a/13891070/4723940
 	out_put_file_name = output_directory + str(round(time.time())) + "." + format_.lower()
