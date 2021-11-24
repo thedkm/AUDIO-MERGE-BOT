@@ -17,7 +17,7 @@ async def Metadata(input_file: str, user_id: int, message: Message, format_: str
 		"ffmpeg",
 		"-i",
 		input_file,
-		"-f,
+		"-f",
 		"ffmetadata",
 		metadatatemp
 	]
