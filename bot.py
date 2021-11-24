@@ -494,21 +494,12 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	with open(input_,'w') as _list:
 		_list.write("\n".join(vid_list))
 			
-  
-    merged_video_path = await MergeVideo(
-        input_file=input_,
-        meta_data = meta_data_path,
-        user_id=cb.from_user.id,
-        message=cb.message,
-        format_='mp3'
+	merged_video_path = await MergeVideo(
+		input_file=input_,
+		user_id=cb.from_user.id,
+		message=cb.message,
+		format_='mp3'
 	)
-    
-    
-    
-    
-    
-    
-    
 	if merged_video_path is None:
 		await cb.message.edit("❌ Failed to merge audio !")
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
