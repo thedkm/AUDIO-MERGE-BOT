@@ -12,7 +12,7 @@ async def Metadata(input_file: str, user_id: int, message: Message, format_: str
 	This is for Merging Videos Together!
 
 	"""
-	output_vid = f"downloads/{str(user_id)}/[@yashoswalyo].{format_.lower()}"
+	metadatatemp = f"downloads/{str(user_id)}/[@yashoswalyo].{format_.lower()}"
 	file_generator_command = [
 		"ffmpeg",
 		"-i",
