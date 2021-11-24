@@ -20,6 +20,7 @@ from config import Config
 from helpers import database
 from helpers.display_progress import progress_for_pyrogram
 from helpers.ffmpeg import MergeVideo
+from helpers.ffmpeg import MetaData
 from helpers.uploader import uploadVideo
 from helpers.utils import get_readable_time, get_readable_file_size
 from helpers.rclone_upload import rclone_driver, rclone_upload
@@ -178,7 +179,7 @@ async def video_handler(c: Client, m: Message):
 	elif len(queueDB.get(m.from_user.id)) > 100:
 		markup = await MakeButtons(c,m,queueDB)
 		await editable.text(
-			"Max 30 audio allowed",
+			"Max 50 audio allowed",
 			reply_markup=InlineKeyboardMarkup(markup)
 		)
 
@@ -494,11 +495,11 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	with open(input_,'w') as _list:
 		_list.write("\n".join(vid_list))
 		
-	meta_data = await Metadata(
+	meta_data = await MetaData(
 		input_file=input_,
 		user_id=cb.from_user.id,
 		message=cb.message,
-		format_='txt'	
+		format_='mp3'	
 	)	
 	merged_video_path = await MergeVideo(
 		input_file=input_,
