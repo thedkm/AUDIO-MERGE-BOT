@@ -494,15 +494,13 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	with open(input_,'w') as _list:
 		_list.write("\n".join(vid_list))
 			
-	
-
-      
+  
     merged_video_path = await MergeVideo(
-		input_file=input_,
+        input_file=input_,
         meta_data = meta_data_path,
-		user_id=cb.from_user.id,
-		message=cb.message,
-		format_='mp3'
+        user_id=cb.from_user.id,
+        message=cb.message,
+        format_='mp3'
 	)
     
     
