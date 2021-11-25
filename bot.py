@@ -544,8 +544,8 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 			duration = metadata.get("duration").seconds
 		if metadata.has("title"):
 			title = metadata.get("title")
-		if metadata.has("auther"):
-			artist = metadata.get("auther")
+		if metadata.has("artist"):
+			artist = metadata.get("artist")
     
         
 	except:
