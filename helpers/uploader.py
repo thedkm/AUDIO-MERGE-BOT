@@ -28,7 +28,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbn
 				audio=merged_video_path,
 				duration=duration,
                 performer=artist,
-                title=re.sub(r"\s\s*", ".", title),
+                title=title,
 				caption=f"**{file_caption}**",
 				file_name=audio_file_name,
 				progress=progress_for_pyrogram,
