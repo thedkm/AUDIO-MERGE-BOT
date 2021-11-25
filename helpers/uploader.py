@@ -18,9 +18,8 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbn
 		audio_file_name = os.path.basename(merged_video_path)
 		audio_file_name = re.sub(r"\s\s*", ".", audio_file_name)
 		audio_file_name = re.sub(r"__*", ".", audio_file_name)
-        file_caption = ".".join(audio_file_name.split(".")[:-1])
-        title_name = re.sub(r"\s\s*", ".", title)
-        title_name = re.sub(r"__*", ".", title)
+
+		file_caption = ".".join(audio_file_name.split(".")[:-1])
 
 		if upload_mode is False:
 			c_time = time.time()
@@ -29,7 +28,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbn
 				audio=merged_video_path,
 				duration=duration,
                 performer=artist,
-                title=title_name,
+                title=re.sub(r"__*", ".", title),
 				caption=f"**{file_caption}**",
 				file_name=audio_file_name,
 				progress=progress_for_pyrogram,
