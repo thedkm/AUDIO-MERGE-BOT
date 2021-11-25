@@ -6,7 +6,7 @@ import os
 import re
 
 
-async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbnail,width,height,duration,file_size,upload_mode:bool):
+async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbnail,title,artist,duration,file_size,upload_mode:bool):
 	try:
 		sent_ = None
 
@@ -27,6 +27,8 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbn
 				chat_id=cb.message.chat.id,
 				audio=merged_video_path,
 				duration=duration,
+                performer=artist,
+                title=title,
 				caption=f"**{file_caption}**",
 				file_name=audio_file_name,
 				progress=progress_for_pyrogram,
