@@ -27,7 +27,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbn
 				chat_id=cb.message.chat.id,
 				audio=merged_video_path,
 				duration=duration,
-                artist=artist,
+                performer=artist,
                 title=re.sub(r"__*", ".", title),
 				caption=f"**{file_caption}**",
 				file_name=audio_file_name,
