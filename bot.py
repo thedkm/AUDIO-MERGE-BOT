@@ -546,7 +546,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 			title = metadata.get("title")
 		if metadata.has("artist"):
 			artist = metadata.get("artist")
-    print(title)        
+        
 	except:
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
@@ -562,7 +562,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		# img.resize(width,height)
 		img.save(video_thumbnail,"JPEG")
     
-    
+    print(title)    
 	await uploadVideo(
 		c=c,
 		cb=cb,
