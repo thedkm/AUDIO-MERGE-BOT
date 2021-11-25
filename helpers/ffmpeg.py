@@ -8,7 +8,7 @@ from pyrogram.types import Message
 
 async def MetaData(filePath:str, user_id: int):
 	print("Extracting MetaData")
-	subprocess.call(f"ffmpeg -i '{filePath}' -f ffmetadata metadatatemp.txt" ,shell=True)
+	subprocess.call(f"ffmpeg -i '{filePath}' -f ffmetadata ./downloads/{str(user_id)}/metadatatemp.txt" ,shell=True)
 	return f'./downloads/{str(user_id)}/metadatatemp.txt'
 
 
@@ -65,7 +65,7 @@ async def MergeVideo(input_file: str, user_id: int, meta_data: str, message: Mes
 		return None
 
 
-	
+
 async def cult_small_video(video_file, output_directory, start_time, end_time, format_):
 	# https://stackoverflow.com/a/13891070/4723940
 	out_put_file_name = output_directory + str(round(time.time())) + "." + format_.lower()
