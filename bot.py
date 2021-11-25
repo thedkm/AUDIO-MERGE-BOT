@@ -566,7 +566,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		c=c,
 		cb=cb,
 		merged_video_path=merged_video_path,
-		album=album,
+		title=title,
 		artist=artist,
 		duration=duration,
 		video_thumbnail=video_thumbnail,
