@@ -560,10 +560,16 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		img = Image.open(video_thumbnail)
 		# img.resize(width,height)
 		img.save(video_thumbnail,"JPEG")
+    duration = 0
+    title = ""
+    artistt = " "
+    
 	await uploadVideo(
 		c=c,
 		cb=cb,
 		merged_video_path=merged_video_path,
+		title=title,
+		performer=artist,
 		duration=duration,
 		video_thumbnail=video_thumbnail,
 		file_size=os.path.getsize(merged_video_path),
