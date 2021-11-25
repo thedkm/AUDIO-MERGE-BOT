@@ -483,7 +483,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 			await delete_all(root=f'./downloads/{cb.from_user.id}')
 			queueDB.update({cb.from_user.id: []})
 			formatDB.update({cb.from_user.id: None})
-			await cb.message.edit('⚠️ Audio is corrupted')
+			await cb.message.edit('⚠️ Audio is corrupted!!')
 			return
 	_cache = list()
 	for i in range(len(vid_list)):
