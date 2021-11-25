@@ -6,7 +6,7 @@ import os
 import re
 
 
-async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbnail,album,artist,duration,file_size,upload_mode:bool):
+async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbnail,title,artist,duration,file_size,upload_mode:bool):
 	try:
 		sent_ = None
 
