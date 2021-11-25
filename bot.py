@@ -542,8 +542,8 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		metadata = extractMetadata(createParser(merged_video_path))
 		if metadata.has("duration"):
 			duration = metadata.get("duration").seconds
-		if metadata.has("album"):
-			album = metadata.get("album")
+		if metadata.has("title"):
+			title = metadata.get("title")
 		if metadata.has("artist"):
 			artist = metadata.get("artist")
 	except:
