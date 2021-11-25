@@ -564,8 +564,6 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		c=c,
 		cb=cb,
 		merged_video_path=merged_video_path,
-		title=title,
-		performer=artist,
 		duration=duration,
 		video_thumbnail=video_thumbnail,
 		file_size=os.path.getsize(merged_video_path),
