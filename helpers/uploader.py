@@ -18,8 +18,7 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbn
 		audio_file_name = os.path.basename(merged_video_path)
 		audio_file_name = re.sub(r"\s\s*", ".", audio_file_name)
 		audio_file_name = re.sub(r"__*", ".", audio_file_name)
-
-		file_caption = ".".join(audio_file_name.split(".")[:-1])
+        file_caption = ".".join(audio_file_name.split(".")[:-1])
         title_name = re.sub(r"\s\s*", ".", title)
         title_name = re.sub(r"__*", ".", title)
 
