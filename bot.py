@@ -546,6 +546,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 			title = metadata.get("title")
 		if metadata.has("artist"):
 			artist = metadata.get("artist")
+        print(artist)
 	except:
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
