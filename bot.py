@@ -446,7 +446,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	if not os.path.exists(f'./downloads/{cb.from_user.id}/'):
 		os.makedirs(f'./downloads/{cb.from_user.id}/')
 	for i in (await c.get_messages(chat_id=cb.from_user.id,message_ids=list_message_ids)):
-		media = i.Audio or i.document
+		media = i.audio or i.document
 		try:
 			await cb.message.edit(f'📥 Downloading...{media.file_name}')
 			await asyncio.sleep(2)
