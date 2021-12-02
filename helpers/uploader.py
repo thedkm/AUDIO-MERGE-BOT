@@ -4,6 +4,7 @@ from pyrogram.types import CallbackQuery
 from helpers.display_progress import progress_for_pyrogram
 import os
 import re
+from bot.helper.ext_utils.fs_utils import take_ss, get_media_info
 
 
 async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbnail,title,artist,duration,file_size,upload_mode:bool):
