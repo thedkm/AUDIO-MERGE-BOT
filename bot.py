@@ -128,7 +128,7 @@ async def Audio_handler(c: Client, m: Message):
 			quote=True
 		)
 		return
-	media = m.Audio or m.document
+	media = m.audio or m.document
 	if media.file_name is None:
 		await m.reply_text('File Not Found')
 		return
