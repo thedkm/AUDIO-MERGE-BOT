@@ -3,6 +3,11 @@
 
 An Telegram Bot To Merge multiple MP3s in Telegram into single Audio.
 
+Whats NEW!!:
+1. Preserve all Metadata of MP3 including Cover art shown on Uploaded MP3 on Telegram.
+2. Supports upto 50 files.
+
+
 
 ## Deploy(at your own risk) :
 <p><a href="https://heroku.com/deploy?template=https://github.com/thedkm/MP3-MERGE-BOT"><img src="https://img.shields.io/badge/Deploy%20To%20Heroku-blueviolet?style=for-the-badge&logo=heroku" width="200""/></a></p>
@@ -61,6 +66,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 - [Me](https://github.com/thedkm) for [Nothing](https://github.com/thedkm/MP3-MERGE-BOT) 😬
 - [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram/pyrogram) ❤️
-- [PropheC](https://github.com/akshettrj) for helping fixing some stuff  ❤️
+- [PropheC](https://github.com/akshettrj) for help in  fixing some stuff  ❤️
 - [yashoswalyo](https://github.com/yashoswalyo) for [repo](https://github.com/yashoswalyo/MERGE-BOT) ❤️                                                                               
 
