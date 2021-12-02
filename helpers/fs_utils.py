@@ -70,6 +70,6 @@ def get_media_info(path):
     return duration, artist, title
 
 def get_cover(path):
-    afile = File('some.mp3') # mutagen can automatically detect format and type of tags
+    afile = File('path') # mutagen can automatically detect format and type of tags
     thumb = afile.tags['APIC:e'].data # access APIC frame and grab the image
     return thumb
