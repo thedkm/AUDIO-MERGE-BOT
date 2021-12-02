@@ -24,8 +24,6 @@ Whats NEW!!:
 ## Commands (add via @botfather) :
 ```sh
 start - Start The Bot
-showthumbnail - Shows your thumbnail
-deletethumbnail - Delete your thumbnail
 help - How to use Bot
 login - Access bot
 broadcast - (admin) Broadcast message to bot users
