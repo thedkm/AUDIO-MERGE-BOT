@@ -79,7 +79,7 @@ def get_cover(path):
     song_path = os.path.join(path)
     track = MP3(song_path)
     tags = ID3(song_path)
-    pict = tags.get("APIC:").data
+    pict = tags.getall("APIC:")[0].data
     im = Image.open(BytesIO(pict))
     thumb = im
     return thumb
