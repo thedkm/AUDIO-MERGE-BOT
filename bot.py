@@ -589,7 +589,7 @@ async def delete_all(root):
 async def MakeButtons(bot: Client, m: Message, db: dict):
 	markup = []
 	for i in (await bot.get_messages(chat_id=m.chat.id, message_ids=db.get(m.chat.id))):
-		media = i.Audio or i.document or None
+		media = i.audio or i.document or None
 		if media is None:
 			continue
 		else:
