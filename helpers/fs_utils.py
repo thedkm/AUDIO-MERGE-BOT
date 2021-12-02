@@ -75,7 +75,6 @@ def get_media_info(path):
     return duration, artist, title
 
 def get_cover(path):
-    print(path)
     song_path = os.path.join(path)
     track = MP3(song_path)
     tags = ID3(song_path)
