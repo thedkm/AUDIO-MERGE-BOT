@@ -24,12 +24,14 @@ async def uploadVideo(c: Client,cb: CallbackQuery,merged_video_path,video_thumbn
 
 		if upload_mode is False:
 			duration , artist, title = get_media_info(merged_video_path)
+			thumb = get_cover(merged_video_path)
 			c_time = time.time()
 			sent_ = await c.send_audio(
 				chat_id=cb.message.chat.id,
 				audio=merged_video_path,
 				duration=duration,
 				performer=artist,
+				thumb=thumb,
 				title= re.sub(r"\s*-\s*[pP]art.*", " ", title),
 				caption=f"**{file_caption}**",
 				file_name=audio_file_name,
