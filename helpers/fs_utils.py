@@ -8,6 +8,11 @@ import subprocess
 import time
 import math
 import json
+import sys
+from io import BytesIO
+from mutagen.mp3 import MP3
+from mutagen.id3 import ID3
+
 
 from PIL import Image
 from mutagen import File
@@ -71,6 +76,9 @@ def get_media_info(path):
 
 def get_cover(path):
     print(path)
-    afile = File(path) # mutagen can automatically detect format and type of tags
-    thumb = afile.tags['APIC:'].data # access APIC frame and grab the image
+    track = MP3(path)
+    tags = ID3(path)
+    pict = tags.get("APIC:").data
+    im = Image.open(BytesIO(pict))
+    thumb = im
     return thumb
