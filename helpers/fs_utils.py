@@ -81,5 +81,6 @@ def get_cover(path):
     tags = ID3(song_path)
     pict = tags.getall("APIC:")[0].data
     im = Image.open(BytesIO(pict))
-    thumb = im
+    thumb = BytesIO()
+    im.save(thumb, format='JPEG')
     return thumb
