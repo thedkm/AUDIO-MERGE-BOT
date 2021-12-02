@@ -19,8 +19,8 @@ from pyromod import listen
 from config import Config
 from helpers import database
 from helpers.display_progress import progress_for_pyrogram
-from helpers.ffmpeg import MergeVideo, MetaData
-from helpers.uploader import uploadVideo
+from helpers.ffmpeg import MergeAudio, MetaData
+from helpers.uploader import uploadAudio
 from helpers.utils import get_readable_time, get_readable_file_size
 from helpers.rclone_upload import rclone_driver, rclone_upload
 
@@ -120,15 +120,15 @@ async def start_handler(c: Client, m: Message):
 	)
 
 	
-@mergeApp.on_message((filters.document | filters.audio) & filters.private & ~filters.edited)
-async def video_handler(c: Client, m: Message):
+@mergeApp.on_message((filters.document | filters.Audio) & filters.private & ~filters.edited)
+async def Audio_handler(c: Client, m: Message):
 	if await database.allowedUser(uid=m.from_user.id) is False:
 		res = await m.reply_text(
 			text=f"Hi **{m.from_user.first_name}**\n\n 🛡️ Unfortunately you can't use me ",
 			quote=True
 		)
 		return
-	media = m.audio or m.document
+	media = m.Audio or m.document
 	if media.file_name is None:
 		await m.reply_text('File Not Found')
 		return
@@ -159,7 +159,7 @@ async def video_handler(c: Client, m: Message):
 		queueDB.get(m.from_user.id).append(m.message_id)
 		if len(queueDB.get(m.from_user.id)) == 1:
 			await editable.edit(
-				'**Send me some more audio to merge them into single file**',parse_mode='markdown'
+				'**Send me some more Audio to merge them into single file**',parse_mode='markdown'
 			)
 			return
 		if queueDB.get(m.from_user.id, None) is None:
@@ -178,7 +178,7 @@ async def video_handler(c: Client, m: Message):
 	elif len(queueDB.get(m.from_user.id)) > 100:
 		markup = await MakeButtons(c,m,queueDB)
 		await editable.text(
-			"Max 50 audio allowed",
+			"Max 50 Audio allowed",
 			reply_markup=InlineKeyboardMarkup(markup)
 		)
 
@@ -314,7 +314,7 @@ async def callback(c: Client, cb: CallbackQuery):
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
-						InlineKeyboardButton('🎧Audio', callback_data='video'),
+						InlineKeyboardButton('🎧Audio', callback_data='Audio'),
 						InlineKeyboardButton('📁 File', callback_data='document')
 					]
 				]
@@ -333,7 +333,7 @@ async def callback(c: Client, cb: CallbackQuery):
 				]
 			)
 		)
-	elif cb.data == 'video':
+	elif cb.data == 'Audio':
 		Config.upload_as_doc.update({f'{cb.from_user.id}':False})
 		await cb.message.edit(
 			text='Do you want to rename? Default file name is **_merged.mp3**',
@@ -389,7 +389,7 @@ async def callback(c: Client, cb: CallbackQuery):
 		m = await c.get_messages(chat_id=cb.message.chat.id,message_ids=int(cb.data.rsplit("_",1)[-1]))
 		try:
 			await cb.message.edit(
-				text=f"File Name: {m.video.file_name}",
+				text=f"File Name: {m.Audio.file_name}",
 				reply_markup=InlineKeyboardMarkup(
 					[
 						[
@@ -446,7 +446,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	if not os.path.exists(f'./downloads/{cb.from_user.id}/'):
 		os.makedirs(f'./downloads/{cb.from_user.id}/')
 	for i in (await c.get_messages(chat_id=cb.from_user.id,message_ids=list_message_ids)):
-		media = i.audio or i.document
+		media = i.Audio or i.document
 		try:
 			await cb.message.edit(f'📥 Downloading...{media.file_name}')
 			await asyncio.sleep(2)
@@ -490,7 +490,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		if vid_list[i] not in _cache:
 			_cache.append(vid_list[i])
 	vid_list = _cache
-	await cb.message.edit(f"🔀 Trying to merge audio ...")
+	await cb.message.edit(f"🔀 Trying to merge Audio ...")
 	with open(input_,'w') as _list:
 		_list.write("\n".join(vid_list))
         
@@ -500,15 +500,15 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	
 	)
 			
-	merged_video_path = await MergeVideo(
+	merged_Audio_path = await MergeAudio(
 		input_file=input_,
         meta_data=meta_data_path,
 		user_id=cb.from_user.id,
 		message=cb.message,
 		format_='mp3'
 	)
-	if merged_video_path is None:
-		await cb.message.edit("❌ Failed to merge audio !")
+	if merged_Audio_path is None:
+		await cb.message.edit("❌ Failed to merge Audio !")
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
 		formatDB.update({cb.from_user.id: None})
@@ -516,13 +516,13 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	await cb.message.edit("✅ Sucessfully Merged Audio !")
 	print(f"Audio merged for: {cb.from_user.first_name} ")
 	await asyncio.sleep(3)
-	file_size = os.path.getsize(merged_video_path)
-	os.rename(merged_video_path,new_file_name)
+	file_size = os.path.getsize(merged_Audio_path)
+	os.rename(merged_Audio_path,new_file_name)
 	await cb.message.edit(f"🔄 Renamed Merged Audio to\n **{new_file_name.rsplit('/',1)[-1]}**")
 	await asyncio.sleep(1)
-	merged_video_path = new_file_name
+	merged_Audio_path = new_file_name
 	if Config.upload_to_drive[f'{cb.from_user.id}']:
-		await rclone_driver(omess,cb,merged_video_path)
+		await rclone_driver(omess,cb,merged_Audio_path)
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
 		formatDB.update({cb.from_user.id: None})
@@ -539,7 +539,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	title = ""
 	artist = " "
 	try:
-		metadata = extractMetadata(createParser(merged_video_path))
+		metadata = extractMetadata(createParser(merged_Audio_path))
 		if metadata.has("duration"):
 			duration = metadata.get("duration").seconds
 		if metadata.has("title"):
@@ -553,25 +553,25 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		formatDB.update({cb.from_user.id: None})
 		await cb.message.edit("⭕ Merged Audio is corrupted")
 		return
-	video_thumbnail = f'./downloads/{cb.from_user.id}_thumb.jpg'
-	if os.path.exists(video_thumbnail) is False:
-		video_thumbnail=f"./assets/default_thumb.jpg"
+	Audio_thumbnail = f'./downloads/{cb.from_user.id}_thumb.jpg'
+	if os.path.exists(Audio_thumbnail) is False:
+		Audio_thumbnail=f"./assets/default_thumb.jpg"
 	else: 
-		Image.open(video_thumbnail).convert("RGB").save(video_thumbnail)
-		img = Image.open(video_thumbnail)
+		Image.open(Audio_thumbnail).convert("RGB").save(Audio_thumbnail)
+		img = Image.open(Audio_thumbnail)
 		# img.resize(width,height)
-		img.save(video_thumbnail,"JPEG")
+		img.save(Audio_thumbnail,"JPEG")
     
    
-	await uploadVideo(
+	await uploadAudio(
 		c=c,
 		cb=cb,
-		merged_video_path=merged_video_path,
+		merged_Audio_path=merged_Audio_path,
 		title=title,
 		artist=artist,
 		duration=duration,
-		video_thumbnail=video_thumbnail,
-		file_size=os.path.getsize(merged_video_path),
+		Audio_thumbnail=Audio_thumbnail,
+		file_size=os.path.getsize(merged_Audio_path),
 		upload_mode=Config.upload_as_doc[f'{cb.from_user.id}']
 	)
 	await cb.message.delete(True)
@@ -589,7 +589,7 @@ async def delete_all(root):
 async def MakeButtons(bot: Client, m: Message, db: dict):
 	markup = []
 	for i in (await bot.get_messages(chat_id=m.chat.id, message_ids=db.get(m.chat.id))):
-		media = i.video or i.document or None
+		media = i.Audio or i.document or None
 		if media is None:
 			continue
 		else:
