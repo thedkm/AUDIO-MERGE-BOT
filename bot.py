@@ -27,7 +27,7 @@ from helpers.rclone_upload import rclone_driver, rclone_upload
 botStartTime = time.time()
 
 mergeApp = Client(
-	session_name="merge-bot",
+	session_name="audio-merge-bot",
 	api_hash=Config.API_HASH,
 	api_id=Config.API_ID,
 	bot_token=Config.BOT_TOKEN,
@@ -167,7 +167,7 @@ async def Audio_handler(c: Client, m: Message):
 		if replyDB.get(m.from_user.id, None) is not None:
 			await c.delete_messages(chat_id=m.chat.id, message_ids=replyDB.get(m.from_user.id))
 		if len(queueDB.get(m.from_user.id)) == 100:
-			MessageText = "Okay Unkil, Now Just Press **Merge Now** Button Plox!"
+			MessageText = "Okay, Now Just Press **Merge Now** Button Plox!"
 		markup = await MakeButtons(c, m, queueDB)
 		reply_ = await m.reply_text(
 			text=MessageText,
@@ -182,25 +182,7 @@ async def Audio_handler(c: Client, m: Message):
 			reply_markup=InlineKeyboardMarkup(markup)
 		)
 
-@mergeApp.on_message(filters.photo & filters.private & ~filters.edited)
-async def photo_handler(c: Client,m: Message):
-	if await database.allowedUser(uid=m.from_user.id) is False:
-		res = await m.reply_text(
-			text=f"Hi **{m.from_user.first_name}**\n\n 🛡️ Unfortunately you can't use me",
-			quote=True
-		)
-		return
-	thumbnail = m.photo.file_id
-	msg = await m.reply_text('Saving Thumbnail. . . .',quote=True)
-	await database.saveThumb(m.from_user.id,thumbnail)
-	LOCATION = f'./downloads/{m.from_user.id}_thumb.jpg'
-	await c.download_media(
-		message=m,
-		file_name=LOCATION
-	)
-	await msg.edit_text(
-		text="✅ Custom Thumbnail Saved!"
-	)
+
 	
 @mergeApp.on_message(filters.command(['help']) & filters.private & ~filters.edited)
 async def help_msg(c: Client, m: Message):
@@ -226,7 +208,7 @@ async def help_msg(c: Client, m: Message):
 async def about_handler(c:Client,m:Message):
 	await m.reply_text(
 		text='''
-	**\n\n ⚡ I am a MP3 Merger bot\n\n😎 I Can merge upto 20 MP3s Files into Single MP3, And upload it to telegram.		''',
+	**\n\n ⚡ I am a MP3 Merger bot\n\n😎 I Can merge upto 50 MP3s Files into Single MP3, And upload it to Telegram.		''',
 		quote=True,
 		reply_markup=InlineKeyboardMarkup(
 			[ 
@@ -237,34 +219,7 @@ async def about_handler(c:Client,m:Message):
 		)
 	)
 
-@mergeApp.on_message(filters.command(['showthumbnail']) & filters.private & ~filters.edited)
-async def show_thumbnail(c:Client ,m: Message):
-	try:
-		thumb_id = await database.getThumb(m.from_user.id)
-		LOCATION = f'./downloads/{m.from_user.id}_thumb.jpg'
-		await c.download_media(message=str(thumb_id),file_name=LOCATION)
-		if os.path.exists(LOCATION) is False:
-			await m.reply_text(text='❌ Custom thumbnail not found',quote=True)
-		else:
-			await m.reply_photo(photo=LOCATION, caption='🖼️ Your custom thumbnail', quote=True)
-	except Exception as err:
-		await m.reply_text(text='❌ Custom thumbnail not found',quote=True)
 
-
-@mergeApp.on_message(filters.command(['deletethumbnail']) & filters.private & ~filters.edited)
-async def delete_thumbnail(c: Client,m: Message):
-	try:
-		thumb_id = await database.getThumb(m.from_user.id)
-		LOCATION = f'./downloads/{m.from_user.id}_thumb.jpg'
-		await c.download_media(message=str(thumb_id),file_name=LOCATION)
-		if os.path.exists(LOCATION) is False:
-			await m.reply_text(text='❌ Custom thumbnail not found',quote=True)
-		else:
-			await database.delThumb(m.from_user.id)
-			os.remove(LOCATION)
-			await m.reply_text('✅ Deleted Sucessfully',quote=True)
-	except Exception as err:
-		await m.reply_text(text='❌ Custom thumbnail not found',quote=True)
 		
 
 @mergeApp.on_callback_query()
@@ -553,14 +508,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		formatDB.update({cb.from_user.id: None})
 		await cb.message.edit("⭕ Merged Audio is corrupted")
 		return
-	Audio_thumbnail = f'./downloads/{cb.from_user.id}_thumb.jpg'
-	if os.path.exists(Audio_thumbnail) is False:
-		Audio_thumbnail=f"./assets/default_thumb.jpg"
-	else: 
-		Image.open(Audio_thumbnail).convert("RGB").save(Audio_thumbnail)
-		img = Image.open(Audio_thumbnail)
-		# img.resize(width,height)
-		img.save(Audio_thumbnail,"JPEG")
+	
     
    
 	await uploadAudio(
@@ -570,7 +518,6 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 		title=title,
 		artist=artist,
 		duration=duration,
-		Audio_thumbnail=Audio_thumbnail,
 		file_size=os.path.getsize(merged_Audio_path),
 		upload_mode=Config.upload_as_doc[f'{cb.from_user.id}']
 	)

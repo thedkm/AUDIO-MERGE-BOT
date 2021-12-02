@@ -7,7 +7,7 @@ import re
 from helpers.fs_utils import  get_media_info, get_cover
 
 
-async def uploadAudio(c: Client,cb: CallbackQuery,merged_Audio_path,Audio_thumbnail,title,artist,duration,file_size,upload_mode:bool):
+async def uploadAudio(c: Client,cb: CallbackQuery,merged_Audio_path,title,artist,duration,file_size,upload_mode:bool):
 	try:
 		sent_ = None
 
