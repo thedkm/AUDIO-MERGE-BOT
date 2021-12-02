@@ -7,3 +7,4 @@ TgCrypto
 dnspython
 psutil
 ffmpeg-python
+python-magic
