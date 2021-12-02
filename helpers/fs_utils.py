@@ -70,6 +70,7 @@ def get_media_info(path):
     return duration, artist, title
 
 def get_cover(path):
+    print(path)
     afile = File(path) # mutagen can automatically detect format and type of tags
     thumb = afile.tags['APIC:'].data # access APIC frame and grab the image
     return thumb
