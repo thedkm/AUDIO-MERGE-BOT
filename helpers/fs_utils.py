@@ -10,6 +10,7 @@ import math
 import json
 
 from PIL import Image
+from mutagen import File
 
 
 VIDEO_SUFFIXES = ("M4V", "MP4", "MOV", "FLV", "WMV", "3GP", "MPG", "WEBM", "MKV", "AVI")
