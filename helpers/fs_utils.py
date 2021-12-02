@@ -76,8 +76,9 @@ def get_media_info(path):
 
 def get_cover(path):
     print(path)
-    track = MP3(path)
-    tags = ID3(path)
+    song_path = os.path.join(path)
+    track = MP3(song_path)
+    tags = ID3(song_path)
     pict = tags.get("APIC:").data
     im = Image.open(BytesIO(pict))
     thumb = im
