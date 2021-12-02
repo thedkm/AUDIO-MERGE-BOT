@@ -4,7 +4,7 @@ from pyrogram.types import CallbackQuery
 from helpers.display_progress import progress_for_pyrogram
 import os
 import re
-from helpers.fs_utils import take_ss, get_media_info, get_cover
+from helpers.fs_utils import  get_media_info, get_cover
 
 
 async def uploadAudio(c: Client,cb: CallbackQuery,merged_Audio_path,Audio_thumbnail,title,artist,duration,file_size,upload_mode:bool):
