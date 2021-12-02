@@ -120,7 +120,7 @@ async def start_handler(c: Client, m: Message):
 	)
 
 	
-@mergeApp.on_message((filters.document | filters.Audio) & filters.private & ~filters.edited)
+@mergeApp.on_message((filters.document | filters.audio) & filters.private & ~filters.edited)
 async def Audio_handler(c: Client, m: Message):
 	if await database.allowedUser(uid=m.from_user.id) is False:
 		res = await m.reply_text(
