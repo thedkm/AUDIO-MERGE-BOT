@@ -21,7 +21,7 @@ async def MergeAudio(input_file: str, user_id: int, meta_data: str, message: Mes
 	:param format_: Pass File Extension.
 	:return: This will return Merged audio File Path
 	"""
-	output_vid = f"downloads/{str(user_id)}/[@yashoswalyo].{format_.lower()}"
+	output_vid = f"downloads/{str(user_id)}/merged.{format_.lower()}"
 	file_generator_command = [
 		"ffmpeg",
 		"-f",
