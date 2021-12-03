@@ -23,6 +23,7 @@ from helpers.ffmpeg import MergeAudio, MetaData
 from helpers.uploader import uploadAudio
 from helpers.utils import get_readable_time, get_readable_file_size
 from helpers.rclone_upload import rclone_driver, rclone_upload
+from helpers.fs_utils import  get_media_info
 
 botStartTime = time.time()
 
