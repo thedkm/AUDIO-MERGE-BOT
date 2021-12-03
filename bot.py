@@ -288,7 +288,7 @@ async def callback(c: Client, cb: CallbackQuery):
 				]
 			)
 		)
-	elif cb.data == 'Audio':
+	elif cb.data == 'audio':
 		Config.upload_as_doc.update({f'{cb.from_user.id}':False})
 		await cb.message.edit(
 			text='Do you want to rename? Default file name is **_merged.mp3**',
