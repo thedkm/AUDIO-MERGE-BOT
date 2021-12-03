@@ -315,7 +315,6 @@ async def callback(c: Client, cb: CallbackQuery):
 			await cb.message.delete()
 
 	elif cb.data.startswith('rename_'):
-        title = get_media_info(file_dl_path)
 		if 'YES' in cb.data:
 			await cb.message.edit(
 				'Current filename: **_merged.mp3**\n\nSend me new file name without extension: ',
@@ -327,7 +326,7 @@ async def callback(c: Client, cb: CallbackQuery):
 				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
 				await mergeNow(c,cb,new_file_name)
 		if 'NO' in cb.data:
-			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(re.sub(r"\s*-\s*[pP]art.*", " ", title)).mp3})
+			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/_merged.mp3")
 
 	elif cb.data == 'cancel':
 		await delete_all(root=f"downloads/{cb.from_user.id}/")
