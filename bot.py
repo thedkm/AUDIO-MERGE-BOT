@@ -315,7 +315,7 @@ async def callback(c: Client, cb: CallbackQuery):
 			await cb.message.delete()
 
 	elif cb.data.startswith('rename_'):
-        title = get_media_info(file_dl_path)
+         title = get_media_info(file_dl_path)
         
 		if 'YES' in cb.data:
 			await cb.message.edit(
