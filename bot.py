@@ -254,7 +254,7 @@ async def callback(c: Client, cb: CallbackQuery):
 			return
 		Config.upload_to_drive.update({f'{cb.from_user.id}':True})
 		await cb.message.edit(
-			text="Okay I'll upload to drive\nDo you want to rename? Default file name is **_merged.mp3**",
+			text="Okay I'll upload to drive\nDo you want to rename?",
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
@@ -280,7 +280,7 @@ async def callback(c: Client, cb: CallbackQuery):
 	elif cb.data == 'document':
 		Config.upload_as_doc.update({f'{cb.from_user.id}':True})
 		await cb.message.edit(
-			text='Do you want to rename? Default file name is **_merged.mp3**',
+			text='Do you want to rename?',
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
@@ -293,7 +293,7 @@ async def callback(c: Client, cb: CallbackQuery):
 	elif cb.data == 'Audio':
 		Config.upload_as_doc.update({f'{cb.from_user.id}':False})
 		await cb.message.edit(
-			text='Do you want to rename? Default file name is **_merged.mp3**',
+			text='Do you want to rename?',
 			reply_markup=InlineKeyboardMarkup(
 				[
 					[
@@ -467,8 +467,6 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 	await asyncio.sleep(3)
 	file_size = os.path.getsize(merged_Audio_path)
 	os.rename(merged_Audio_path,new_file_name)
-	await cb.message.edit(f"🔄 Renamed Merged Audio to\n **{new_file_name.rsplit('/',1)[-1]}**")
-	await asyncio.sleep(1)
 	merged_Audio_path = new_file_name
 	if Config.upload_to_drive[f'{cb.from_user.id}']:
 		await rclone_driver(omess,cb,merged_Audio_path)
@@ -504,6 +502,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 		return
 
 	title = re.sub(r"\s*-\s*[pP]art.*", " ", title)
+	title = re.sub(r"\.*$", "", title)
 
 	final_file_name = title.replace(" ", "_")
 	if rename:
@@ -522,6 +521,8 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 		# await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(title)}.mp3", rename=False)
 		os.rename(merged_Audio_path,final_file_name)
 
+	await cb.message.edit(f"🔄 Renamed Merged Audio to\n **{final_file_name.rsplit('/',1)[-1]}**")
+	await asyncio.sleep(1)
 
 	await uploadAudio(
 		c=c,
