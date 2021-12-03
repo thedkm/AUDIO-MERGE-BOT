@@ -328,7 +328,7 @@ async def callback(c: Client, cb: CallbackQuery):
 				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
 				await mergeNow(c,cb,new_file_name)
 		if 'NO' in cb.data:
-            await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(re.sub(r"\s*-\s*[pP]art.*", " ", title)).mp3})
+            await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/_.mp3})
 
 	elif cb.data == 'cancel':
 		await delete_all(root=f"downloads/{cb.from_user.id}/")
