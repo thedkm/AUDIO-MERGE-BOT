@@ -223,157 +223,6 @@ async def about_handler(c:Client,m:Message):
 
 		
 
-@mergeApp.on_callback_query()
-async def callback(c: Client, cb: CallbackQuery):
-	
-	if cb.data == 'merge':
-		await cb.message.edit(
-			text='Where do you want to upload?',
-			reply_markup=InlineKeyboardMarkup(
-				[
-					[
-						InlineKeyboardButton('📤 To Telegram', callback_data = 'to_telegram'),
-						InlineKeyboardButton('🌫️ To Drive', callback_data = 'to_drive')
-					]
-				]
-			)
-		)
-
-	elif cb.data == 'to_drive':
-		try:
-			urc = await database.getUserRcloneConfig(cb.from_user.id)
-			await c.download_media(message=urc,file_name=f"userdata/{cb.from_user.id}/rclone.conf")
-		except Exception as err:
-			await cb.message.reply_text("Rclone not Found, Unable to upload to drive")
-		if os.path.exists(f"userdata/{cb.from_user.id}/rclone.conf") is False:
-			await cb.message.delete()
-			await delete_all(root=f"downloads/{cb.from_user.id}/")
-			queueDB.update({cb.from_user.id: []})
-			formatDB.update({cb.from_user.id: None})
-			return 
-		Config.upload_to_drive.update({f'{cb.from_user.id}':True})
-		await cb.message.edit(
-			text="Okay I'll upload to drive\nDo you want to rename? Default file name is **_merged.mp3**",
-			reply_markup=InlineKeyboardMarkup(
-				[
-					[
-						InlineKeyboardButton('👆 Default', callback_data='rename_NO'),
-						InlineKeyboardButton('✍️ Rename', callback_data='rename_YES')
-					]
-				]
-			)
-		)
-	elif cb.data == 'to_telegram':
-		Config.upload_to_drive.update({f'{cb.from_user.id}':False})
-		await cb.message.edit(
-			text='How do yo want to upload file',
-			reply_markup=InlineKeyboardMarkup(
-				[
-					[
-						InlineKeyboardButton('🎧Audio', callback_data='Audio'),
-						InlineKeyboardButton('📁 File', callback_data='document')
-					]
-				]
-			)
-		)
-	elif cb.data == 'document':
-		Config.upload_as_doc.update({f'{cb.from_user.id}':True})
-		await cb.message.edit(
-			text='Do you want to rename? Default file name is **_merged.mp3**',
-			reply_markup=InlineKeyboardMarkup(
-				[
-					[
-						InlineKeyboardButton('👆 Default', callback_data='rename_NO'),
-						InlineKeyboardButton('✍️ Rename', callback_data='rename_YES')
-					]
-				]
-			)
-		)
-	elif cb.data == 'Audio':
-		Config.upload_as_doc.update({f'{cb.from_user.id}':False})
-		await cb.message.edit(
-			text='Do you want to rename? Default file name is **_merged.mp3**',
-			reply_markup=InlineKeyboardMarkup(
-				[
-					[
-						InlineKeyboardButton('👆 Default', callback_data='rename_NO'),
-						InlineKeyboardButton('✍️ Rename', callback_data='rename_YES')
-					]
-				]
-			)
-		)
-	
-	elif cb.data.startswith('rclone_'):
-		if 'save' in cb.data:
-			fileId = cb.message.reply_to_message.document.file_id
-			print(fileId)
-			await c.download_media(
-				message=cb.message.reply_to_message,
-				file_name=f"./userdata/{cb.from_user.id}/rclone.conf"
-			)
-			await database.addUserRcloneConfig(cb, fileId)
-		else:
-			await cb.message.delete()
-
-	elif cb.data.startswith('rename_'):
-		if 'YES' in cb.data:
-			await cb.message.edit(
-				'Current filename: **_merged.mp3**\n\nSend me new file name without extension: ',
-				parse_mode='markdown'
-			)
-			res: Message = await c.listen( cb.message.chat.id, timeout=300 )
-			if res.text :
-				ascii_ = e = ''.join([i if (i in string.digits or i in string.ascii_letters or i == " ") else " " for i in res.text])
-				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
-				await mergeNow(c,cb,new_file_name)
-		if 'NO' in cb.data:
-			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(title=get_media_info(file_dl_path))}.mp3")
-
-	elif cb.data == 'cancel':
-		await delete_all(root=f"downloads/{cb.from_user.id}/")
-		queueDB.update({cb.from_user.id: []})
-		formatDB.update({cb.from_user.id: None})
-		await cb.message.edit("Sucessfully Cancelled")
-		await asyncio.sleep(5)
-		await cb.message.delete(True)
-		return
-		
-	elif cb.data == 'close':
-		await cb.message.delete(True)
-
-	elif cb.data.startswith('showFileName_'):
-		m = await c.get_messages(chat_id=cb.message.chat.id,message_ids=int(cb.data.rsplit("_",1)[-1]))
-		try:
-			await cb.message.edit(
-				text=f"File Name: {m.Audio.file_name}",
-				reply_markup=InlineKeyboardMarkup(
-					[
-						[
-							InlineKeyboardButton("Remove",callback_data=f"removeFile_{str(m.message_id)}"),
-							InlineKeyboardButton("Back", callback_data="back")
-						]
-					]
-				)
-			)
-		except:
-			await cb.message.edit(
-				text=f"File Name: {m.document.file_name}",
-				reply_markup=InlineKeyboardMarkup(
-					[
-						[
-							InlineKeyboardButton("Remove",callback_data=f"removeFile_{str(m.message_id)}"),
-							InlineKeyboardButton("Back", callback_data="back")
-						]
-					]
-				)
-			)
-	
-	elif cb.data == 'back':
-		await showQueue(c,cb)
-
-	elif cb.data.startswith('removeFile_'):
-		queueDB.get(cb.from_user.id).remove(int(cb.data.split("_", 1)[-1]))
-		await showQueue(c,cb)
 
 async def showQueue(c:Client, cb: CallbackQuery):
 	try:
@@ -533,6 +382,159 @@ async def delete_all(root):
 		shutil.rmtree(root)
 	except Exception as e:
 		print(e)
+        
+@mergeApp.on_callback_query()
+async def callback(c: Client, cb: CallbackQuery):
+	
+	if cb.data == 'merge':
+		await cb.message.edit(
+			text='Where do you want to upload?',
+			reply_markup=InlineKeyboardMarkup(
+				[
+					[
+						InlineKeyboardButton('📤 To Telegram', callback_data = 'to_telegram'),
+						InlineKeyboardButton('🌫️ To Drive', callback_data = 'to_drive')
+					]
+				]
+			)
+		)
+
+	elif cb.data == 'to_drive':
+		try:
+			urc = await database.getUserRcloneConfig(cb.from_user.id)
+			await c.download_media(message=urc,file_name=f"userdata/{cb.from_user.id}/rclone.conf")
+		except Exception as err:
+			await cb.message.reply_text("Rclone not Found, Unable to upload to drive")
+		if os.path.exists(f"userdata/{cb.from_user.id}/rclone.conf") is False:
+			await cb.message.delete()
+			await delete_all(root=f"downloads/{cb.from_user.id}/")
+			queueDB.update({cb.from_user.id: []})
+			formatDB.update({cb.from_user.id: None})
+			return 
+		Config.upload_to_drive.update({f'{cb.from_user.id}':True})
+		await cb.message.edit(
+			text="Okay I'll upload to drive\nDo you want to rename? Default file name is **_merged.mp3**",
+			reply_markup=InlineKeyboardMarkup(
+				[
+					[
+						InlineKeyboardButton('👆 Default', callback_data='rename_NO'),
+						InlineKeyboardButton('✍️ Rename', callback_data='rename_YES')
+					]
+				]
+			)
+		)
+	elif cb.data == 'to_telegram':
+		Config.upload_to_drive.update({f'{cb.from_user.id}':False})
+		await cb.message.edit(
+			text='How do yo want to upload file',
+			reply_markup=InlineKeyboardMarkup(
+				[
+					[
+						InlineKeyboardButton('🎧Audio', callback_data='Audio'),
+						InlineKeyboardButton('📁 File', callback_data='document')
+					]
+				]
+			)
+		)
+	elif cb.data == 'document':
+		Config.upload_as_doc.update({f'{cb.from_user.id}':True})
+		await cb.message.edit(
+			text='Do you want to rename? Default file name is **_merged.mp3**',
+			reply_markup=InlineKeyboardMarkup(
+				[
+					[
+						InlineKeyboardButton('👆 Default', callback_data='rename_NO'),
+						InlineKeyboardButton('✍️ Rename', callback_data='rename_YES')
+					]
+				]
+			)
+		)
+	elif cb.data == 'Audio':
+		Config.upload_as_doc.update({f'{cb.from_user.id}':False})
+		await cb.message.edit(
+			text='Do you want to rename? Default file name is **_merged.mp3**',
+			reply_markup=InlineKeyboardMarkup(
+				[
+					[
+						InlineKeyboardButton('👆 Default', callback_data='rename_NO'),
+						InlineKeyboardButton('✍️ Rename', callback_data='rename_YES')
+					]
+				]
+			)
+		)
+	
+	elif cb.data.startswith('rclone_'):
+		if 'save' in cb.data:
+			fileId = cb.message.reply_to_message.document.file_id
+			print(fileId)
+			await c.download_media(
+				message=cb.message.reply_to_message,
+				file_name=f"./userdata/{cb.from_user.id}/rclone.conf"
+			)
+			await database.addUserRcloneConfig(cb, fileId)
+		else:
+			await cb.message.delete()
+
+	elif cb.data.startswith('rename_'):
+		if 'YES' in cb.data:
+			await cb.message.edit(
+				'Current filename: **_merged.mp3**\n\nSend me new file name without extension: ',
+				parse_mode='markdown'
+			)
+			res: Message = await c.listen( cb.message.chat.id, timeout=300 )
+			if res.text :
+				ascii_ = e = ''.join([i if (i in string.digits or i in string.ascii_letters or i == " ") else " " for i in res.text])
+				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
+				await mergeNow(c,cb,new_file_name)
+		if 'NO' in cb.data:
+			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(title=get_media_info(file_dl_path))}.mp3")
+
+	elif cb.data == 'cancel':
+		await delete_all(root=f"downloads/{cb.from_user.id}/")
+		queueDB.update({cb.from_user.id: []})
+		formatDB.update({cb.from_user.id: None})
+		await cb.message.edit("Sucessfully Cancelled")
+		await asyncio.sleep(5)
+		await cb.message.delete(True)
+		return
+		
+	elif cb.data == 'close':
+		await cb.message.delete(True)
+
+	elif cb.data.startswith('showFileName_'):
+		m = await c.get_messages(chat_id=cb.message.chat.id,message_ids=int(cb.data.rsplit("_",1)[-1]))
+		try:
+			await cb.message.edit(
+				text=f"File Name: {m.Audio.file_name}",
+				reply_markup=InlineKeyboardMarkup(
+					[
+						[
+							InlineKeyboardButton("Remove",callback_data=f"removeFile_{str(m.message_id)}"),
+							InlineKeyboardButton("Back", callback_data="back")
+						]
+					]
+				)
+			)
+		except:
+			await cb.message.edit(
+				text=f"File Name: {m.document.file_name}",
+				reply_markup=InlineKeyboardMarkup(
+					[
+						[
+							InlineKeyboardButton("Remove",callback_data=f"removeFile_{str(m.message_id)}"),
+							InlineKeyboardButton("Back", callback_data="back")
+						]
+					]
+				)
+			)
+	
+	elif cb.data == 'back':
+		await showQueue(c,cb)
+
+	elif cb.data.startswith('removeFile_'):
+		queueDB.get(cb.from_user.id).remove(int(cb.data.split("_", 1)[-1]))
+		await showQueue(c,cb)
+        
 
 async def MakeButtons(bot: Client, m: Message, db: dict):
 	markup = []
