@@ -527,7 +527,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 		title=title,
 		artist=artist,
 		duration=duration,
-		file_size=os.path.getsize(merged_Audio_path),
+		file_size=os.path.getsize(final_file_name),
 		upload_mode=Config.upload_as_doc[f'{cb.from_user.id}']
 	)
 	await cb.message.delete(True)
