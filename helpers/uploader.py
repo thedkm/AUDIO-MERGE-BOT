@@ -31,7 +31,7 @@ async def uploadAudio(c: Client,cb: CallbackQuery,merged_Audio_path,title,artist
 				audio=merged_Audio_path,
 				duration=duration,
 				performer=artist,
-				thumb=thumb,
+				#thumb=thumb,
 				title= re.sub(r"\s*-\s*[pP]art.*", " ", title),
 				caption=f"**{file_caption}**",
 				file_name=audio_file_name,
