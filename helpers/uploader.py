@@ -24,14 +24,14 @@ async def uploadAudio(c: Client,cb: CallbackQuery,merged_Audio_path,title,artist
 
 		if upload_mode is False:
 			duration , artist, title = get_media_info(merged_Audio_path)
-			thumb = get_cover(merged_Audio_path)
+			#thumb = get_cover(merged_Audio_path)
 			c_time = time.time()
 			sent_ = await c.send_audio(
 				chat_id=cb.message.chat.id,
 				audio=merged_Audio_path,
 				duration=duration,
 				performer=artist,
-				thumb=thumb,
+				#thumb=thumb,
 				title= re.sub(r"\s*-\s*[pP]art.*", " ", title),
 				caption=f"**{file_caption}**",
 				file_name=audio_file_name,
