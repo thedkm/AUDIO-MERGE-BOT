@@ -501,7 +501,8 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 		await cb.message.edit("⭕ Merged Audio is corrupted")
 		return
 
-	title = re.sub(r"\.*\s*-\s*[pP]art.*", "", title)
+	title = re.sub(r"\s*-\s*[pP]art.*", " ", title)
+	title = re.sub(r"\.*$", "", title)
 
 	final_file_name = title.replace(" ", "_")
 	if rename:
