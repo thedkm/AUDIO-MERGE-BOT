@@ -441,7 +441,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 	vid_list = _cache
 	await cb.message.edit(f"🔀 Trying to merge Audio ...")
 	with open(input_,'w') as _list:
-		_list.write("\n".join(vid_list))
+		_list.write("\n".join(sorted(vid_list)))
 
 	meta_data_path = await MetaData(
 		filePath=file_dl_path,
