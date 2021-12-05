@@ -4,7 +4,6 @@ import shutil
 import string
 import time
 import shutil, psutil
-import re
 
 import pyrogram
 from hachoir import metadata
@@ -502,8 +501,6 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 		formatDB.update({cb.from_user.id: None})
 		await cb.message.edit("⭕ Merged Audio is corrupted")
 		return
-
-	title = re.sub(r"\s*-\s*[pP]art.*", " ", title)
 
 	final_file_name = title.replace(" ", "_")
 	if rename:
