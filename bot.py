@@ -317,9 +317,17 @@ async def callback(c: Client, cb: CallbackQuery):
 
 	elif cb.data.startswith('rename_'):
 		if 'YES' in cb.data:
-			await mergeNow(c,cb,f"./downloads/{str(cb.from_user.id)}/_merged.mp3", rename=True)
+			await cb.message.edit(
+				'Current filename: **_merged.mp3**\n\nSend me new file name without extension: ',
+				parse_mode='markdown'
+			)
+			res: Message = await c.listen( cb.message.chat.id, timeout=300 )
+			if res.text :
+				ascii_ = e = ''.join([i if (i in string.digits or i in string.ascii_letters or i == " ") else " " for i in res.text])
+				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
+				await mergeNow(c,cb,new_file_name, rename=True)
 		if 'NO' in cb.data:
-			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/_merged.mp3", rename=False)
+			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(title)}.mp3", rename=False)
 
 	elif cb.data == 'cancel':
 		await delete_all(root=f"downloads/{cb.from_user.id}/")
