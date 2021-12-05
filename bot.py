@@ -120,7 +120,7 @@ async def start_handler(c: Client, m: Message):
 		quote=True
 	)
 
-
+	
 @mergeApp.on_message((filters.document | filters.audio) & filters.private & ~filters.edited)
 async def Audio_handler(c: Client, m: Message):
 	if await database.allowedUser(uid=m.from_user.id) is False:
@@ -184,7 +184,7 @@ async def Audio_handler(c: Client, m: Message):
 		)
 
 
-
+	
 @mergeApp.on_message(filters.command(['help']) & filters.private & ~filters.edited)
 async def help_msg(c: Client, m: Message):
 	await m.reply_text(
@@ -197,7 +197,7 @@ async def help_msg(c: Client, m: Message):
 5) Select rename if you want to give custom file name else press default**''',
 		quote=True,
 		reply_markup=InlineKeyboardMarkup(
-			[
+			[ 
 				[
 					InlineKeyboardButton("Close 🔐", callback_data="close")
 				]
@@ -212,8 +212,8 @@ async def about_handler(c:Client,m:Message):
 	**\n\n ⚡ I am a MP3 Merger bot\n\n😎 I Can merge upto 50 MP3s Files into Single MP3, And upload it to Telegram.		''',
 		quote=True,
 		reply_markup=InlineKeyboardMarkup(
-			[
-				[
+			[ 
+				[ 
 					InlineKeyboardButton("Owner", url="https://t.me/SherlockSr")
 				]
 			]
@@ -221,11 +221,11 @@ async def about_handler(c:Client,m:Message):
 	)
 
 
-
+		
 
 @mergeApp.on_callback_query()
 async def callback(c: Client, cb: CallbackQuery):
-
+	
 	if cb.data == 'merge':
 		await cb.message.edit(
 			text='Where do you want to upload?',
@@ -250,7 +250,7 @@ async def callback(c: Client, cb: CallbackQuery):
 			await delete_all(root=f"downloads/{cb.from_user.id}/")
 			queueDB.update({cb.from_user.id: []})
 			formatDB.update({cb.from_user.id: None})
-			return
+			return 
 		Config.upload_to_drive.update({f'{cb.from_user.id}':True})
 		await cb.message.edit(
 			text="Okay I'll upload to drive\nDo you want to rename? Default file name is **_merged.mp3**",
@@ -302,7 +302,7 @@ async def callback(c: Client, cb: CallbackQuery):
 				]
 			)
 		)
-
+	
 	elif cb.data.startswith('rclone_'):
 		if 'save' in cb.data:
 			fileId = cb.message.reply_to_message.document.file_id
@@ -325,9 +325,9 @@ async def callback(c: Client, cb: CallbackQuery):
 			if res.text :
 				ascii_ = e = ''.join([i if (i in string.digits or i in string.ascii_letters or i == " ") else " " for i in res.text])
 				new_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
-				await mergeNow(c,cb,new_file_name, rename=True)
+				await mergeNow(c,cb,new_file_name)
 		if 'NO' in cb.data:
-			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(title)}.mp3", rename=False)
+			await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(title)}.mp3")
 
 	elif cb.data == 'cancel':
 		await delete_all(root=f"downloads/{cb.from_user.id}/")
@@ -337,7 +337,7 @@ async def callback(c: Client, cb: CallbackQuery):
 		await asyncio.sleep(5)
 		await cb.message.delete(True)
 		return
-
+		
 	elif cb.data == 'close':
 		await cb.message.delete(True)
 
@@ -367,7 +367,7 @@ async def callback(c: Client, cb: CallbackQuery):
 					]
 				)
 			)
-
+	
 	elif cb.data == 'back':
 		await showQueue(c,cb)
 
@@ -386,7 +386,7 @@ async def showQueue(c:Client, cb: CallbackQuery):
 		await cb.message.edit('Send Some more Audio')
 
 
-async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
+async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str):
 	omess = cb.message.reply_to_message
 	# print(omess.message_id)
 	vid_list = list()
@@ -449,13 +449,13 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 	await cb.message.edit(f"🔀 Trying to merge Audio ...")
 	with open(input_,'w') as _list:
 		_list.write("\n".join(vid_list))
-
+        
 	meta_data_path = await MetaData(
 		filePath=file_dl_path,
 		user_id=cb.from_user.id,
-
+	
 	)
-
+			
 	merged_Audio_path = await MergeAudio(
 		input_file=input_,
         meta_data=meta_data_path,
@@ -489,7 +489,7 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 		queueDB.update({cb.from_user.id: []})
 		formatDB.update({cb.from_user.id: None})
 		return
-
+	
 	await cb.message.edit("🎧 Extracting Audio Data ...")
 	duration = 0
 	title = ""
@@ -502,36 +502,20 @@ async def mergeNow(c:Client, cb:CallbackQuery,new_file_name: str, rename: bool):
 			title = metadata.get("title")
 		if metadata.has("artist"):
 			artist = metadata.get("artist")
-
+       
 	except:
 		await delete_all(root=f'./downloads/{cb.from_user.id}')
 		queueDB.update({cb.from_user.id: []})
 		formatDB.update({cb.from_user.id: None})
 		await cb.message.edit("⭕ Merged Audio is corrupted")
 		return
-
-	final_file_name = title.replace(" ", "_")
-	if rename:
-		await cb.message.edit(
-			f'Current filename (automatically detected): **{final_file_name}.mp3**\n\nSend me new file name without extension: ',
-			parse_mode='markdown'
-		)
-		res: Message = await c.listen( cb.message.chat.id, timeout=300 )
-		if res.text :
-			ascii_ = e = ''.join([i if (i in string.digits or i in string.ascii_letters or i == " ") else " " for i in res.text])
-			final_file_name = f"./downloads/{str(cb.from_user.id)}/{ascii_.replace(' ', '_')}.mp3"
-			# await mergeNow(c,cb,new_file_name, rename=True)
-			os.rename(merged_Audio_path,final_file_name)
-	else:
-		final_file_name = f"./downloads/{str(cb.from_user.id)}/{final_file_name}.mp3"
-		# await mergeNow(c,cb,new_file_name = f"./downloads/{str(cb.from_user.id)}/{str(title)}.mp3", rename=False)
-		os.rename(merged_Audio_path,final_file_name)
-
-
+	
+    
+   
 	await uploadAudio(
 		c=c,
 		cb=cb,
-		merged_Audio_path=final_file_name,
+		merged_Audio_path=merged_Audio_path,
 		title=title,
 		artist=artist,
 		duration=duration,
