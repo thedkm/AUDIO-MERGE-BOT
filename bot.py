@@ -191,11 +191,11 @@ async def help_msg(c: Client, m: Message):
 	await m.reply_text(
 		text='''**Follow These Steps:
 
-1) Send me the custom thumbnail (optional).
-2) Send two or more Your Audio Which you want to merge
-3) After sending all files select merge options
-4) Select the upload mode.
-5) Select rename if you want to give custom file name else press default**''',
+
+1) Send two or more Your Audio Which you want to merge
+2) After sending all files select merge options
+3) Select the upload mode.
+4) Select rename if you want to give custom file name else press default**''',
 		quote=True,
 		reply_markup=InlineKeyboardMarkup(
 			[
