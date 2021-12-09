@@ -28,6 +28,7 @@ help - How to use Bot
 login - Access bot
 broadcast - (admin) Broadcast message to bot users
 stats - check bots stats
+about - Information about bot  
 ```
 
 ## Self Host
