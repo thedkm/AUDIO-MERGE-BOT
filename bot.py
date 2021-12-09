@@ -217,6 +217,9 @@ async def about_handler(c:Client,m:Message):
 				[
 					InlineKeyboardButton("Owner", url="https://t.me/SherlockSr")
 				]
+                [
+					InlineKeyboardButton("Repo", url="https://github.com/thedkm/MP3-MERGE-BOT")
+				]
 			]
 		)
 	)
