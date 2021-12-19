@@ -34,7 +34,7 @@ async def allowedUser(uid):
 	try:
 		if uid == a['_id']:
 			return True
-	except TypeError:	
+	except TypeError:
 		return False
 
 async def saveThumb(uid,fid):
@@ -85,6 +85,6 @@ async def addUserRcloneConfig(cb:CallbackQuery, fileId):
 async def getUserRcloneConfig(uid):
 	try:
 		res = db.mergebot.rcloneData.find_one({'_id':uid})
-		return res['rcloneFileId'] 
+		return res['rcloneFileId']
 	except Exception as err:
 		return None

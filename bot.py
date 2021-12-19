@@ -5,6 +5,7 @@ import string
 import time
 import shutil, psutil
 import re
+from sys import executable
 
 import pyrogram
 from hachoir import metadata
@@ -14,6 +15,7 @@ from PIL import Image
 from pyrogram import Client, filters
 from pyrogram.errors import MessageNotModified
 from pyrogram.errors.exceptions.flood_420 import FloodWait
+from pyrogram.methods.utilities.idle import idle
 from pyrogram.types import (CallbackQuery, InlineKeyboardButton,InlineKeyboardMarkup, Message)
 from pyromod import listen
 
@@ -218,7 +220,7 @@ async def about_handler(c:Client,m:Message):
 					InlineKeyboardButton("Owner", url="https://t.me/SherlockSr"),
                     InlineKeyboardButton("Repo", url="https://github.com/thedkm/MP3-MERGE-BOT")
 				]
-                
+
 			]
 		)
 	)
@@ -560,5 +562,41 @@ async def MakeButtons(bot: Client, m: Message, db: dict):
 	return markup
 
 
+@mergeApp.on_message(filters.command(['restart']) & filters.private & ~filters.edited & filters.user(Config.OWNER))
+async def restart_bot(c: Client, m: Message):
 
-mergeApp.run()
+	reply_msg = await m.reply_text(
+		text="Restarting...",
+		quote=True
+	)
+
+	current_process = psutil.Process()
+	for child in current_process.children(recursive=True):
+		child.kill()
+
+	# Remove all downloads
+	await delete_all(root=f'./downloads')
+
+	with open('.restartmsg', 'w') as f:
+		f.truncate(0)
+		f.write(f"{reply_msg.chat.id}\n{reply_msg.message_id}")
+
+	os.execl(executable, executable, "bot.py")
+
+mergeApp.start()
+
+if os.path.exists('.restartmsg'):
+	file_data = []
+	with open('.restartmsg', 'r') as f:
+		file_data = f.readlines()
+	if len(file_data) >= 2:
+		chat_id = int(file_data[0].strip())
+		msg_id = int(file_data[1].strip())
+		_ = mergeApp.send_message(
+				chat_id=chat_id,
+				reply_to_message_id=msg_id,
+				text="Successfully Restarted"
+				)
+	os.remove('.restartmsg')
+
+idle()
