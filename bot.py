@@ -31,7 +31,7 @@ from helpers.fs_utils import  get_media_info
 botStartTime = time.time()
 
 mergeApp = Client(
-	session_name="audio-merge-bot",
+	name="audio-merge-bot",
 	api_hash=Config.API_HASH,
 	api_id=Config.API_ID,
 	bot_token=Config.BOT_TOKEN,
